@@ -74,6 +74,24 @@ class window(tk.Tk):
         self.iconbitmap(default = "icon.bmp")
         """
 
+        style = tk.ttk.Style()
+        style.element_create("Custom.Treeheading.border", "from", "default")
+        style.layout("Custom.Treeview.Heading", [
+            ("Custom.Treeheading.cell", {'sticky': 'nsew'}),
+            ("Custom.Treeheading.border", {'sticky':'nsew', 'children': [
+                ("Custom.Treeheading.padding", {'sticky':'nsew', 'children': [
+                    ("Custom.Treeheading.image", {'side':'right', 'sticky':''}),
+                    ("Custom.Treeheading.text", {'sticky':'we'})
+                ]})
+            ]}),
+        ])
+        style.configure("Custom.Treeview.Heading",
+            background="gray15", foreground="white", relief="flat")
+        style.configure("Treeview",
+            background = "gray30", foreground = "white", fieldbackground = "gray30")
+        style.map("Custom.Treeview.Heading",
+            relief=[('active','groove'),('pressed','sunken')])
+
         #Fonts
         #LARGE FONT used with menu titles
         self.LARGE_FONT = (
