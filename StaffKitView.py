@@ -87,36 +87,36 @@ class ViewKit(tk.Frame):
 
         #Kits treeview
         self.tree = tk.ttk.Treeview(
-                                    self,
-                                    style = "Custom.Treeview",
-                                    columns = (
-                                                "Kit ID",
-                                                "Kit Name",
-                                                "Price",
-                                                "Size"
-                                                )
-                                    )
+            self,
+            style = "Custom.Treeview",
+            columns = (
+                "Kit ID",
+                "Kit Name",
+                "Price",
+                "Size"
+            )
+        )
         self.tree.heading(
-                                    "#0",
-                                    text = "Kit ID"
-                                    )
+            "#0",
+            text = "Kit ID"
+        )
         self.tree.heading(
-                                    "#1",
-                                    text = "Kit Name"
-                                    )
+            "#1",
+            text = "Kit Name"
+        )
         self.tree.heading(
-                                    "#2",
-                                    text = "Price"
-                                    )
+            "#2",
+            text = "Price"
+        )
         self.tree.heading(
-                                    "#3",
-                                    text = "Size"
-                                    )
+            "#3",
+            text = "Size"
+        )
         self.tree.grid(
-                                    row = 3,
-                                    columnspan = 4,
-                                    sticky = "ns"
-                                    )
+            row = 3,
+            columnspan = 4,
+            sticky = "ns"
+        )
 
     def updateTable(
                     self,

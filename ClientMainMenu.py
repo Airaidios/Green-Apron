@@ -3,10 +3,10 @@ import tkinter as tk
 import ClientOrderMenu as com 
 import ClientFoodView as cfv 
 import ClientAccountMenu as cam 
-import Login as l 
+import Login as l
 
 #Main Class
-class MainMenuStaff(tk.Frame):
+class MainMenuClient(tk.Frame):
 
     #Initialise method
     def __init__(
