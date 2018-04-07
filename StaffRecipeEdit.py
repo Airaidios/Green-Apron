@@ -305,16 +305,16 @@ class StaffRecipeEdit(tk.Frame):
         addServe = """UPDATE RECIPE SET (servings) = (?) WHERE (rec_id) = ?"""
         addPrep = """UPDATE RECIPE SET (prep_time) = (?) WHERE (rec_id) = ?"""
         if not name == None:
-            if not name.isalpha() == True:
+            if name.isalpha() == True:
                 cursor.execute(addName, Name)
         if not culture == None:
-            if not culture.isalpha() == True:
+            if culture.isalpha() == True:
                 cursor.execute(addCult, Cult)
         if not servings == None:
-            if not servings.isdecimal() == True:
+            if servings.isdecimal() == True:
                 cursor.execute(addServe, Serve)
         if not prep == None:
-            if not prep.isdecimal() == True:
+            if prep.isdecimal() == True:
                 cursor.execute(addPrep, Prep)
         connection.commit()
         cursor.close()
