@@ -105,4 +105,140 @@ class ClientAccountView(tk.Frame):
         )
 
         #Diet requirements
+        self.labelDiet = tk.Label(
+            self,
+            text = "DIET REQUIREMENTS",
+            fg = "white",
+            bg = "gray20",
+            font = controller.SMALL_FONT
+        )
+        self.labelDiet.grid(
+            row = 5,
+            column = 0,
+            sticky = "ns",
+            pady = 10,
+            padx = 10
+        )
+
+        #Email
+        self.labelMail = tk.Label(
+            self,
+            text = "EMAIL ADDRESS",
+            fg = "white",
+            bg = "gray20",
+            font = controller.SMALL_FONT
+        )
+        self.labelMail.grid(
+            row = 6,
+            column = 0,
+            sticky = "ns",
+            pady = 10,
+            padx = 10
+        )
+
+        #Stringvars
+        self.stringForename = tk.StringVar()
+        self.stringSurname = tk.StringVar()
+        self.stringAddress = tk.StringVar()
+        self.stringPackage = tk.StringVar()
+        self.stringDiet = tk.StringVar()
+        self.stringMail = tk.StringVar()
+
+        #Display Labels
+
+        #Forename display
+        self.displayForename = tk.Label(
+            self,
+            text = self.stringForename,
+            font = controller.SMALL_FONT,
+            fg = "white",
+            bg = "gray20",
+        )
+        self.displayForename.grid(
+            row = 1,
+            column = 1,
+            sticky = "ns",
+            pady = 10,
+            padx = 10
+        )
+
+        #Surname display
+        self.displaySurname = tk.Label(
+            self,
+            text = self.stringSurname,
+            font = controller.SMALL_FONT,
+            fg = "white",
+            bg = "gray20"
+        )
+        self.displaySurname.grid(
+            row = 2,
+            column = 1,
+            sticky = "ns",
+            pady = 10,
+            padx = 10
+        )
+
+        #Address display
+        self.displayAddress = tk.Label(
+            self,
+            text = self.stringAddress,
+            font = controller.SMALL_FONT,
+            fg = "white",
+            bg = "gray20",
+        )
+        self.displayAddress.grid(
+            row = 3,
+            column = 1,
+            sticky = "ns",
+            pady = 10,
+            padx = 10
+        )
+
+        #Package display
+        self.displayPackage = tk.Label(
+            self,
+            text = self.stringPackage,
+            font = controller.SMALL_FONT,
+            fg = "white",
+            bg = "gray20"
+        )
+        self.displayPackage.grid(
+            row = 4,
+            column = 1,
+            sticky = "ns",
+            pady = 10,
+            padx = 10
+        )
+
+        #Diet display
+        self.displayDiet = tk.Label(
+            self,
+            text = self.stringDiet,
+            font = controller.SMALL_FONT,
+            fg = "white",
+            bg = "gray20"
+        )
+        self.displayDiet.grid(
+            row = 5, 
+            column = 1,
+            sticky = "ns",
+            pady = 10,
+            padx = 10
+        )
+
+        #Mail display
+        self.displayMail = tk.Label(
+            self,
+            text = self.stringMail,
+            font = controller.SMALL_FONT,
+            fg = "white",
+            bg = "gray20"
+        )
+        self.displayMail.grid(
+            row = 6,
+            column = 1,
+            sticky = "ns",
+            pady = 10,
+            padx = 10
+        )
         
