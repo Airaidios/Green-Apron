@@ -91,10 +91,10 @@ class ClientOrderView(tk.Frame):
             self,
             text = "REFRESH",
             font = controller.SMALL_FONT,
-            fg = "44d276",
+            fg = "#44D276",
             bg = "gray10",
             activeforeground = "white",
-            activebackground = "44d276",
+            activebackground = "#44D276",
             width = 25,
             command = lambda: self.populateTable(
                 self.tree,

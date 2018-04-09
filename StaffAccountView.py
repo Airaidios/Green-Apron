@@ -94,7 +94,6 @@ class StaffAccountView(tk.Frame):
             columns = (
                 "Account ID",
                 "First Name",
-                "Surname",
                 "Address",
                 "Package",
                 "Diet Reqs",
@@ -112,22 +111,18 @@ class StaffAccountView(tk.Frame):
         )
         self.tree.heading(
             "#2",
-            text = "Surname"
-        )
-        self.tree.heading(
-            "#3",
             text = "Address"
         )
         self.tree.heading(
-            "#4",
+            "#3",
             text = "Package",
         )
         self.tree.heading(
-            "#5",
+            "#4",
             text = "Diet Reqs",
         )
         self.tree.heading(
-            "#6",
+            "#5",
             text = "Email",
         )
         self.tree.heading(

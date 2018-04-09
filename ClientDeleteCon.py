@@ -87,6 +87,13 @@ class ClientDeleteCon(tk.Frame):
             width = 25,
             command = lambda: self.deleteAccount(accountID)
         )
+        self.buttonConfirm.grid(
+            row = 3,
+            column = 1,
+            sticky = "ns",
+            pady = 10,
+            padx = 10
+        )
 
     def deleteAccount(
         self,

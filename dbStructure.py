@@ -15,8 +15,7 @@ clientTable = """CREATE TABLE IF NOT EXISTS CLIENT
     (
     client_id integer NOT NULL PRIMARY KEY AUTOINCREMENT,
     order_id integer,
-    fname text,
-    sname text,
+    username text,
     address text,
     package integer,
     diet_req text,

@@ -1,7 +1,9 @@
 #Imports
 import tkinter as tk
 import StaffMainMenu as smm
+import ClientMainMenu as cmm
 import sqlite3 as sql
+import CreateAccount as ca
 
 #Main class
 class Login(tk.Frame):
@@ -163,7 +165,11 @@ class Login(tk.Frame):
             activebackground = "#44D276",
             activeforeground = "white",
             width = 12,
-            command = lambda: controller.show_frame(smm.MainMenuStaff)
+            command = lambda: self.login(
+               self.entryName.get(),
+               self.entryPass.get(),
+               controller
+            )
         )
         self.buttonLogin.grid(
             row = 4,
@@ -193,12 +199,51 @@ class Login(tk.Frame):
             padx = 10
         )
 
+        self.buttonCreate = tk.Button(
+            self,
+            text = "CREATE ACCOUNT",
+            font = controller.SMALL_FONT,
+            fg = "#44d276",
+            bg = "gray10",
+            activeforeground = "white",
+            activebackground = "#44d276",
+            width = 25,
+            command = lambda: controller.show_frame(ca.CreateAccount)
+        )
+        self.buttonCreate.grid(
+            row = 5,
+            column = 0,
+            columnspan = 2,
+            sticky = "ns",
+            pady = 10,
+            padx = 10
+        )
+
     #Method for validating login details, then directing user to appropriate menu
     #UNFINISHED - CURRENTLY JUST BRINGS USER TO MAIN MENU
     def login(
         self,
         username,
-        password
+        password,
+        controller,
         ):
         connection = sql.connect("ga.db")
         cursor = connection.cursor()
+        fetchLevel = """SELECT level FROM CLIENT WHERE username = ?"""
+        if not username == None:
+            cursor.execute(fetchLevel, (username,))
+            level = int(cursor.fetchone()[0])
+            if level == 1:
+                controller.show_frame(smm.MainMenuStaff)
+            elif level == 0:
+                controller.show_frame(cmm.MainMenuClient)
+            else:
+                pass
+        else:
+            pass
+        fetchID = """SELECT client_id FROM CLIENT WHERE username = ?"""
+        cursor.execute(fetchID, (username,))
+        global accountID
+        accountID = int(cursor.fetchone()[0])
+        cursor.close()
+        

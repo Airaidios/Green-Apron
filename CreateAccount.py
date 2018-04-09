@@ -1,6 +1,6 @@
 #imports
 import tkinter as tk 
-import login as l
+import Login as l
 import sqlite3 as sql
 
 #Main class 
@@ -68,31 +68,15 @@ class CreateAccount(tk.Frame):
         )
 
         #First name 
-        self.labelForename = tk.Label(
+        self.labelUsername = tk.Label(
             self,
-            text = "FORENAME",
+            text = "username",
             font = controller.SMALL_FONT,
             fg = "white",
             bg = "gray20"
         )
-        self.labelForename.grid(
+        self.labelUsername.grid(
             row = 1,
-            column = 0,
-            sticky = "ns",
-            pady = 10,
-            padx = 10
-        )
-
-        #Surname
-        self.labelSurname = tk.Label(
-            self,
-            text = "SURNAME",
-            font = controller.SMALL_FONT,
-            fg = "white",
-            bg = "gray20"
-        )
-        self.labelSurname.grid(
-            row = 2,
             column = 0,
             sticky = "ns",
             pady = 10,
@@ -108,7 +92,7 @@ class CreateAccount(tk.Frame):
             bg = "gray20",
         )
         self.labelAddress.grid(
-            row = 3,
+            row = 2,
             column = 0,
             sticky = "ns",
             pady = 10,
@@ -124,7 +108,7 @@ class CreateAccount(tk.Frame):
             bg = "gray20"
         )
         self.labelPackage.grid(
-            row = 4,
+            row = 3,
             column = 0,
             sticky = "ns",
             pady = 10,
@@ -140,7 +124,7 @@ class CreateAccount(tk.Frame):
             bg = "gray20"
         )
         self.labelDiet.grid(
-            row = 5,
+            row = 4,
             column = 0,
             sticky = "ns",
             pady = 10,
@@ -156,7 +140,7 @@ class CreateAccount(tk.Frame):
             bg = "gray20"
         )
         self.labelMail.grid(
-            row = 6,
+            row = 5,
             column = 0,
             sticky = "ns",
             pady = 10,
@@ -165,30 +149,15 @@ class CreateAccount(tk.Frame):
 
         #Entries
 
-        #Forename 
-        self.entryForename = tk.Entry(
+        #username 
+        self.entryUsername = tk.Entry(
             self,
             bg = "gray30",
             fg = "white",
             bd = 2
         )
-        self.entryForename.grid(
+        self.entryUsername.grid(
             row = 1,
-            column = 1,
-            sticky = "ns",
-            pady = 10,
-            padx = 10
-        )
-
-        #Surname
-        self.entrySurname = tk.Entry(
-            self,
-            bg = "gray30",
-            fg = "white",
-            bd = 2
-        )
-        self.entrySurname.grid(
-            row = 2,
             column = 1,
             sticky = "ns",
             pady = 10,
@@ -203,7 +172,7 @@ class CreateAccount(tk.Frame):
             bd = 2
         )
         self.entryAddress.grid(
-            row = 3,
+            row = 2,
             column = 1,
             sticky = "ns",
             pady = 10,
@@ -218,7 +187,7 @@ class CreateAccount(tk.Frame):
             bd = 2
         )
         self.entryMail.grid(
-            row = 6,
+            row = 5,
             column = 1,
             sticky = "ns",
             pady = 10,
@@ -234,7 +203,7 @@ class CreateAccount(tk.Frame):
             *self.packs
         )
         self.popPack.grid(
-            row = 4,
+            row = 3,
             column = 1,
             sticky = "ns",
             pady = 10,
@@ -248,7 +217,7 @@ class CreateAccount(tk.Frame):
             *self.reqs
         )
         self.popDiet.grid(
-            row = 5,
+            row = 4,
             column = 1,
             sticky = "ns",
             pady = 10,
@@ -269,7 +238,7 @@ class CreateAccount(tk.Frame):
             command = controller.show_frame(l.Login)
         )
         self.buttonReturn.grid(
-            row = 7,
+            row = 6,
             column = 0,
             sticky = "ns",
             pady = 10,
@@ -286,8 +255,7 @@ class CreateAccount(tk.Frame):
             activeforeground = "white",
             activebackground = "#44D276",
             command = self.updateAccount(
-                self.entryForename.get(),
-                self.entrySurname.get(),
+                self.entryUsername.get(),
                 self.entryAddress.get(),
                 self.package.get(),
                 self.diet.get(),
@@ -295,7 +263,7 @@ class CreateAccount(tk.Frame):
             )
         )
         self.buttonSave.grid(
-            row = 7,
+            row = 6,
             column = 1,
             sticky = "ns",
             padx = 10,
@@ -304,8 +272,7 @@ class CreateAccount(tk.Frame):
 
     def updateAccount(
         self,
-        forename,
-        surname,
+        username,
         address,
         package,
         diet,
@@ -313,24 +280,20 @@ class CreateAccount(tk.Frame):
     ):
         connection = sql.connect("ga.db")
         cursor = connection.cursor()
-        addForename = """INSERT INTO CLIENT (fname) VALUES (?)"""
-        addSurname = """INSERT INTO CLIENT (sname) VALUES (?)"""
+        addUsername = """INSERT INTO CLIENT (fname) VALUES (?)"""
         addAddress = """INSERT INTO CLIENT (address) VALUES (?)"""
         addPackage = """INSERT INTO CLIENT (package) VALUES (?)"""
         addDiet = """INSERT INTO CLIENT (diet_req) VALUES (?)"""
         addEmail = """INSERT INTO CLIENT (email) VALUES (?)"""
-        if not forename == None:
-            if forename.isalpha() == True:
-                cursor.execute(addForename, forename)
-        if not surname == None:
-            if surname.isalpha() == True:
-                cursor.execute(addSurname, surname)
+        if not username == None:
+            if username.isalpha() == True:
+                cursor.execute(addUsername, username)
         if not address == None:
             if address[0:2].isdecimal() == True:
                 if address[4:].isalpha() == True:
                     cursor.execute(addAddress, address)
         cursor.execute(addPackage, package)
-        cursor.execute(addDiet, diet)
+        cursor.execute(addDiet, (diet,))
         if not email == None:
             if email.find("@")!=-1:
                 if email[-5:].find(".")!=-1:

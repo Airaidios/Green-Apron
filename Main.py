@@ -33,11 +33,14 @@ import ClientMainMenu as cmm
 import ClientOrderMenu as com 
 import ClientOrderAdd as coa 
 import ClientOrderEdit as coe 
+import ClientOrderView as cov
 #Food
 import ClientFoodView as cfv 
 #Account 
 import ClientAccountMenu as cam 
 import ClientAccountEdit as cae
+import ClientAccountView as cav
+import ClientDeleteCon as cdc
 #Mains
 import Login as l
 import CreateAccount as ca
@@ -136,6 +139,17 @@ class window(tk.Tk):
             sa.StaffAccount,
             sav.StaffAccountView,
             l.Login,
+            cmm.MainMenuClient,
+            com.ClientOrderMenu,
+            coa.ClientOrderAdd,
+            coe.ClientOrderEdit,
+            cov.ClientOrderView,
+            cfv.ClientFoodView,
+            cam.ClientAccountMenu,
+            cae.ClientAccountEdit,
+            cav.ClientAccountView,
+            ca.CreateAccount,
+            cdc.ClientDeleteCon
         ):
             frame = F(
                 container,
@@ -148,6 +162,10 @@ class window(tk.Tk):
                 sticky = "nsew"
             )
         self.show_frame(l.Login)
+
+    #Token assigned to the instance that contains the account ID
+    #of the user. Used mainly in frontend
+    accountID = 0
 
     #Method for transitioning between frames (or "screens" / "windows")
     def show_frame(

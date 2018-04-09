@@ -79,7 +79,7 @@ class MainMenuClient(tk.Frame):
             activeforeground = "white",
             activebackground = "#44D276",
             width = 25,
-            command = lambda: controller.show_frames(com.ClientOrderMenu)
+            command = lambda: controller.show_frame(com.ClientOrderMenu)
         )
         self.buttonOrder.grid(
             row = 2,

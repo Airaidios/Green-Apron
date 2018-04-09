@@ -40,32 +40,16 @@ class ClientAccountView(tk.Frame):
             padx = 10
         )
 
-        #Forename
-        self.labelForename = tk.Label(
+        #username
+        self.labelusername = tk.Label(
             self,
-            text = "FORENAME",
+            text = "username",
             fg = "white",
             bg = "gray20",
             font = controller.SMALL_FONT
         )
-        self.labelForename.grid(
+        self.labelusername.grid(
             row = 1,
-            column = 0,
-            sticky = "ns",
-            pady = 10,
-            padx = 10
-        )
-
-        #Surname
-        self.labelSurname = tk.Label(
-            self,
-            text = "SURNAME",
-            fg = "white",
-            bg = "gray20",
-            font = controller.SMALL_FONT
-        )
-        self.labelSurname.grid(
-            row = 2,
             column = 0,
             sticky = "ns",
             pady = 10,
@@ -138,30 +122,15 @@ class ClientAccountView(tk.Frame):
 
         #Display Labels
 
-        #Forename display
-        self.displayForename = tk.Label(
+        #username display
+        self.displayusername = tk.Label(
             self,
             font = controller.SMALL_FONT,
             fg = "white",
             bg = "gray20",
         )
-        self.displayForename.grid(
+        self.displayusername.grid(
             row = 1,
-            column = 1,
-            sticky = "ns",
-            pady = 10,
-            padx = 10
-        )
-
-        #Surname display
-        self.displaySurname = tk.Label(
-            self,
-            font = controller.SMALL_FONT,
-            fg = "white",
-            bg = "gray20"
-        )
-        self.displaySurname.grid(
-            row = 2,
             column = 1,
             sticky = "ns",
             pady = 10,
@@ -235,10 +204,10 @@ class ClientAccountView(tk.Frame):
             self,
             text = "RETURN",
             font = controller.SMALL_FONT,
-            fg = "#44d276",
+            fg = "#44D276",
             bg = "gray10",
             activeforeground = "white",
-            activebackground = "#44d276",
+            activebackground = "#44D276",
             width = 25,
             command = lambda: controller.show_frame(cam.ClientAccountMenu)
         )
@@ -255,14 +224,13 @@ class ClientAccountView(tk.Frame):
             self,
             text = "REFRESH",
             font = controller.SMALL_FONT,
-            fg = "#44d276",
+            fg = "#44D276",
             bg = "gray10",
             activeforeground = "white",
-            activebackground = "#44d276",
+            activebackground = "#44D276",
             width = 25,
             command = lambda: self.updateDetails(
-                self.displayForename,
-                self.displaySurname,
+                self.displayusername,
                 self.displayAddress,
                 self.displayPackage,
                 self.displayDiet,
@@ -280,8 +248,7 @@ class ClientAccountView(tk.Frame):
         
     def updateDetails(
         self,
-        forenamedisplay,
-        surnamedisplay,
+        usernamedisplay,
         addressdisplay,
         packagedisplay,
         dietdisplay,
@@ -290,20 +257,17 @@ class ClientAccountView(tk.Frame):
     ):
         connection = sql.connect("ga.db")
         cursor = connection.cursor()
-        fetchForename = """SELECT fname FROM CLIENT WHERE client_id = ?"""
-        fetchSurname = """SELECT sname FROM CLIENT WHERE client_id = ?"""
+        fetchusername = """SELECT fname FROM CLIENT WHERE client_id = ?"""
         fetchAddress = """SELECT address FROM CLIENT WHERE client_id = ?"""
         fetchPackage = """SELECT package FROM CLIENT WHERE client_id = ?"""
         fetchDiet = """SELECT diet_req FROM CLIENT WHERE client_id = ?"""
         fetchMail = """SELECT email FROM CLIENT WHERE client_id = ?"""
-        Forename = cursor.execute(fetchForename, aid)
-        Surname = cursor.execute(fetchSurname, aid)
+        username = cursor.execute(fetchusername, aid)
         Address = cursor.execute(fetchAddress, aid)
         Package = cursor.execute(fetchPackage, aid)
         Diet = cursor.execute(fetchDiet, aid)
         Mail = cursor.execute(fetchMail, aid)
-        forenamedisplay.configure(text = Forename)
-        surnamedisplay.configure(text = Surname)
+        usernamedisplay.configure(text = username)
         addressdisplay.configure(text = Address)
         packagedisplay.configure(text = Package)
         dietdisplay.configure(text = Diet)

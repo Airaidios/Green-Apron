@@ -19,6 +19,9 @@ class ClientAccountEdit(tk.Frame):
             parent
         )
 
+        #Account token
+        accountID = controller.accountID
+
         #Styling
         self.configure(bg = "gray20")
 
@@ -68,14 +71,14 @@ class ClientAccountEdit(tk.Frame):
         )
 
         #First name 
-        self.labelForename = tk.Label(
+        self.labelusername = tk.Label(
             self,
-            text = "FORENAME",
+            text = "username",
             font = controller.SMALL_FONT,
             fg = "white",
             bg = "gray20"
         )
-        self.labelForename.grid(
+        self.labelusername.grid(
             row = 1,
             column = 0,
             sticky = "ns",
@@ -83,15 +86,15 @@ class ClientAccountEdit(tk.Frame):
             padx = 10
         )
 
-        #Surname
-        self.labelSurname = tk.Label(
+        #
+        self.label = tk.Label(
             self,
-            text = "SURNAME",
+            text = "",
             font = controller.SMALL_FONT,
             fg = "white",
             bg = "gray20"
         )
-        self.labelSurname.grid(
+        self.label.grid(
             row = 2,
             column = 0,
             sticky = "ns",
@@ -165,30 +168,15 @@ class ClientAccountEdit(tk.Frame):
 
         #Entries
 
-        #Forename 
-        self.entryForename = tk.Entry(
+        #username 
+        self.entryusername = tk.Entry(
             self,
             bg = "gray30",
             fg = "white",
             bd = 2
         )
-        self.entryForename.grid(
+        self.entryusername.grid(
             row = 1,
-            column = 1,
-            sticky = "ns",
-            pady = 10,
-            padx = 10
-        )
-
-        #Surname
-        self.entrySurname = tk.Entry(
-            self,
-            bg = "gray30",
-            fg = "white",
-            bd = 2
-        )
-        self.entrySurname.grid(
-            row = 2,
             column = 1,
             sticky = "ns",
             pady = 10,
@@ -266,7 +254,7 @@ class ClientAccountEdit(tk.Frame):
             bg = "gray10",
             activeforeground = "white",
             activebackground = "#44D276",
-            command = controller.show_frame(cam.ClientAccountMenu)
+            command = lambda: controller.show_frame(cam.ClientAccountMenu)
         )
         self.buttonReturn.grid(
             row = 7,
@@ -286,8 +274,7 @@ class ClientAccountEdit(tk.Frame):
             activeforeground = "white",
             activebackground = "#44D276",
             command = self.updateAccount(
-                self.entryForename.get(),
-                self.entrySurname.get(),
+                self.entryusername.get(),
                 self.entryAddress.get(),
                 self.package.get(),
                 self.diet.get(),
@@ -305,34 +292,28 @@ class ClientAccountEdit(tk.Frame):
 
     def updateAccount(
         self,
-        forename,
-        surname,
+        username,
         address,
         package,
         diet,
         email,
         aid
     ):
-        Forename = (forename, aid)
-        Surname = (surname, aid)
+        Username = (username, aid)
         Address = (address, aid)
         Package = (package, aid)
         Diet = (diet, aid)
         Email = (email, aid)
         connection = sql.connect("ga.db")
         cursor = connection.cursor()
-        addForename = """UPDATE CLIENT SET (fname) = (?) WHERE (client_id) = ?"""
-        addSurname = """UPDATE CLIENT SET (sname) = (?) WHERE (client_id) = ?"""
+        addusername = """UPDATE CLIENT SET (fname) = (?) WHERE (client_id) = ?"""
         addAddress = """UPDATE CLIENT SET (address) = (?) WHERE (client_id) = ?"""
         addPackage = """UPDATE CLIENT SET (package) = (?) WHERE (client_id) = ?"""
         addDiet = """UPDATE CLIENT SET (diet_req) = (?) WHERE (client_id) = ?"""
         addEmail = """UPDATE CLIENT SET (email) = (?) WHERE (client_id) = ?"""
-        if not forename == None:
-            if forename.isalpha() == True:
-                cursor.execute(addForename, Forename)
-        if not surname == None:
-            if surname.isalpha() == True:
-                cursor.execute(addSurname, Surname)
+        if not username == None:
+            if username.isalpha() == True:
+                cursor.execute(addusername, Username)
         if not address == None:
             if address.isalpha() == True:
                 cursor.execute(addAddress, Address)

@@ -79,11 +79,11 @@ class ClientOrderAdd(tk.Frame):
         self.buttonReturn = tk.Button(
             self,
             text = "RETURN",
-            fg = "#44d276",
+            fg = "#44D276",
             bg = "gray10",
             font = controller.SMALL_FONT,
             activeforeground = "white",
-            activebackground = "#44d276",
+            activebackground = "#44D276",
             width = 25,
             command = lambda: controller.show_frame(com.ClientOrderMenu)
         )
@@ -99,11 +99,11 @@ class ClientOrderAdd(tk.Frame):
         self.buttonSave = tk.Button(
             self,
             text = "CONFIRM",
-            fg = "#44d276",
+            fg = "#44D276",
             bg = "gray10",
             font = controller.SMALL_FONT,
             activeforeground = "white",
-            activebackground = "#44d276",
+            activebackground = "#44D276",
             width = 25,
             command = lambda: self.saveOrder(
                 self.entryKit.get(),
