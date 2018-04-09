@@ -125,7 +125,8 @@ class ClientFoodView(tk.Frame):
         table.delete(*table.get_children())
         connection = sql.connect("ga.db")
         cursor = connection.cursor()
-        insert = """SELECT * FROM KIT""" 
+        insert = """SELECT * FROM KIT"""
+        cursor.execute(insert)
         i = 0
         for row in cursor:
             table.insert(

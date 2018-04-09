@@ -136,20 +136,11 @@ class ClientAccountView(tk.Frame):
             padx = 10
         )
 
-        #Stringvars
-        self.stringForename = tk.StringVar()
-        self.stringSurname = tk.StringVar()
-        self.stringAddress = tk.StringVar()
-        self.stringPackage = tk.StringVar()
-        self.stringDiet = tk.StringVar()
-        self.stringMail = tk.StringVar()
-
         #Display Labels
 
         #Forename display
         self.displayForename = tk.Label(
             self,
-            text = self.stringForename,
             font = controller.SMALL_FONT,
             fg = "white",
             bg = "gray20",
@@ -165,7 +156,6 @@ class ClientAccountView(tk.Frame):
         #Surname display
         self.displaySurname = tk.Label(
             self,
-            text = self.stringSurname,
             font = controller.SMALL_FONT,
             fg = "white",
             bg = "gray20"
@@ -181,7 +171,6 @@ class ClientAccountView(tk.Frame):
         #Address display
         self.displayAddress = tk.Label(
             self,
-            text = self.stringAddress,
             font = controller.SMALL_FONT,
             fg = "white",
             bg = "gray20",
@@ -197,7 +186,6 @@ class ClientAccountView(tk.Frame):
         #Package display
         self.displayPackage = tk.Label(
             self,
-            text = self.stringPackage,
             font = controller.SMALL_FONT,
             fg = "white",
             bg = "gray20"
@@ -213,7 +201,6 @@ class ClientAccountView(tk.Frame):
         #Diet display
         self.displayDiet = tk.Label(
             self,
-            text = self.stringDiet,
             font = controller.SMALL_FONT,
             fg = "white",
             bg = "gray20"
@@ -229,7 +216,6 @@ class ClientAccountView(tk.Frame):
         #Mail display
         self.displayMail = tk.Label(
             self,
-            text = self.stringMail,
             font = controller.SMALL_FONT,
             fg = "white",
             bg = "gray20"
@@ -241,4 +227,84 @@ class ClientAccountView(tk.Frame):
             pady = 10,
             padx = 10
         )
+
+        #Buttons
+
+        #Return button
+        self.buttonReturn = tk.Button(
+            self,
+            text = "RETURN",
+            font = controller.SMALL_FONT,
+            fg = "#44d276",
+            bg = "gray10",
+            activeforeground = "white",
+            activebackground = "#44d276",
+            width = 25,
+            command = lambda: controller.show_frame(cam.ClientAccountMenu)
+        )
+        self.buttonReturn.grid(
+            row = 7,
+            column = 0,
+            sticky = "ns",
+            pady = 10,
+            padx = 10
+        )
+
+        #Refresh button
+        self.buttonRefresh = tk.Button(
+            self,
+            text = "REFRESH",
+            font = controller.SMALL_FONT,
+            fg = "#44d276",
+            bg = "gray10",
+            activeforeground = "white",
+            activebackground = "#44d276",
+            width = 25,
+            command = lambda: self.updateDetails(
+                self.displayForename,
+                self.displaySurname,
+                self.displayAddress,
+                self.displayPackage,
+                self.displayDiet,
+                self.displayMail,
+                accountID
+            )
+        )
+        self.buttonRefresh.grid(
+            row = 7,
+            column = 1,
+            sticky = "ns",
+            pady = 10,
+            padx = 10
+        )
         
+    def updateDetails(
+        self,
+        forenamedisplay,
+        surnamedisplay,
+        addressdisplay,
+        packagedisplay,
+        dietdisplay,
+        maildisplay,
+        aid
+    ):
+        connection = sql.connect("ga.db")
+        cursor = connection.cursor()
+        fetchForename = """SELECT fname FROM CLIENT WHERE client_id = ?"""
+        fetchSurname = """SELECT sname FROM CLIENT WHERE client_id = ?"""
+        fetchAddress = """SELECT address FROM CLIENT WHERE client_id = ?"""
+        fetchPackage = """SELECT package FROM CLIENT WHERE client_id = ?"""
+        fetchDiet = """SELECT diet_req FROM CLIENT WHERE client_id = ?"""
+        fetchMail = """SELECT email FROM CLIENT WHERE client_id = ?"""
+        Forename = cursor.execute(fetchForename, aid)
+        Surname = cursor.execute(fetchSurname, aid)
+        Address = cursor.execute(fetchAddress, aid)
+        Package = cursor.execute(fetchPackage, aid)
+        Diet = cursor.execute(fetchDiet, aid)
+        Mail = cursor.execute(fetchMail, aid)
+        forenamedisplay.configure(text = Forename)
+        surnamedisplay.configure(text = Surname)
+        addressdisplay.configure(text = Address)
+        packagedisplay.configure(text = Package)
+        dietdisplay.configure(text = Diet)
+        maildisplay.configure(text = Mail)

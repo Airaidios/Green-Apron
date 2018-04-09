@@ -95,7 +95,7 @@ class ClientAccountMenu(tk.Frame):
             activeforeground = "white",
             activebackground = "#44D276",
             width = 25,
-            command = lambda: controller.show_frame(cadc.ClientAccountDeleteConfirm)
+            command = lambda: controller.show_frame(cadc.ClientDeleteCon)
         )
         self.buttonDelete.grid(
             row = 3,

@@ -246,7 +246,7 @@ class StaffKitEdit(tk.Frame):
         addSize = """UPDATE KIT SET (size) = (?) WHERE kit_id = ?"""
         #update Name
         if not (len(name)) == 0: #Presence check
-            if not name.isalpha() == False: #Type check
+            if name.isalpha() == True: #Type check
                 cursor.execute(addName, Name)
             else:
                 pass 
@@ -254,7 +254,7 @@ class StaffKitEdit(tk.Frame):
             pass
         #Update price
         if not (len(price)) == 0:
-            if not price.isdecimal() == False:
+            if price.isdecimal() == True:
                 cursor.execute(addPrice, Price)
             else:
                 pass 

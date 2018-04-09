@@ -292,7 +292,6 @@ class CreateAccount(tk.Frame):
                 self.package.get(),
                 self.diet.get(),
                 self.entryMail.get(),
-                accountID
             )
         )
         self.buttonSave.grid(
@@ -311,7 +310,6 @@ class CreateAccount(tk.Frame):
         package,
         diet,
         email,
-        aid
     ):
         connection = sql.connect("ga.db")
         cursor = connection.cursor()
