@@ -26,7 +26,7 @@ import StaffRecipeView as srv
 #Accounts
 import StaffAccount as sa
 import StaffAccountView as sav
-"""#Backend
+#Backend
 #Main Menu
 import ClientMainMenu as cmm 
 #Orders 
@@ -37,10 +37,10 @@ import ClientOrderEdit as coe
 import ClientFoodView as cfv 
 #Account 
 import ClientAccountMenu as cam 
-import ClientAccountEdit as cae"""
+import ClientAccountEdit as cae
 #Mains
 import Login as l
-"""import CreateAccount as ca"""
+import CreateAccount as ca
 
 #main class
 #This is the parent class that every window imports from
