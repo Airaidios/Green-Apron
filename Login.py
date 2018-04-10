@@ -165,10 +165,11 @@ class Login(tk.Frame):
             activebackground = "#44D276",
             activeforeground = "white",
             width = 12,
-            command = lambda: self.login(
+            command = lambda: controller.login(
                self.entryName.get(),
                self.entryPass.get(),
-               controller
+               controller,
+               controller.accountID
             )
         )
         self.buttonLogin.grid(
@@ -219,31 +220,4 @@ class Login(tk.Frame):
             padx = 10
         )
 
-    #Method for validating login details, then directing user to appropriate menu
-    #UNFINISHED - CURRENTLY JUST BRINGS USER TO MAIN MENU
-    def login(
-        self,
-        username,
-        password,
-        controller,
-        ):
-        connection = sql.connect("ga.db")
-        cursor = connection.cursor()
-        fetchLevel = """SELECT level FROM CLIENT WHERE username = ?"""
-        if not username == None:
-            cursor.execute(fetchLevel, (username,))
-            level = int(cursor.fetchone()[0])
-            if level == 1:
-                controller.show_frame(smm.MainMenuStaff)
-            elif level == 0:
-                controller.show_frame(cmm.MainMenuClient)
-            else:
-                pass
-        else:
-            pass
-        fetchID = """SELECT client_id FROM CLIENT WHERE username = ?"""
-        cursor.execute(fetchID, (username,))
-        global accountID
-        accountID = int(cursor.fetchone()[0])
-        cursor.close()
         

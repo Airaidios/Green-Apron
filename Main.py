@@ -44,6 +44,7 @@ import ClientDeleteCon as cdc
 #Mains
 import Login as l
 import CreateAccount as ca
+import sqlite3 as sql
 
 #main class
 #This is the parent class that every window imports from
@@ -109,6 +110,9 @@ class window(tk.Tk):
             "bold"
         )
 
+        #Define a local varibale to be inherited in other classes
+        self.accountID = 0
+
         #Images
         #Logo image, used with login and main menu pages.
         self.logo = "C:\\Users\\Cormac\\Desktop\\Software\\Resources\\green_apron.gif"
@@ -163,10 +167,6 @@ class window(tk.Tk):
             )
         self.show_frame(l.Login)
 
-    #Token assigned to the instance that contains the account ID
-    #of the user. Used mainly in frontend
-    accountID = 0
-
     #Method for transitioning between frames (or "screens" / "windows")
     def show_frame(
         self,
@@ -174,6 +174,36 @@ class window(tk.Tk):
     ):
         frame = self.frames[cont]
         frame.tkraise()
+
+    #Method for validating login details, then directing user to appropriate menu
+    #UNFINISHED - CURRENTLY JUST BRINGS USER TO MAIN MENU
+    def login(
+        self,
+        username,
+        password,
+        controller,
+        aid
+    ):
+        connection = sql.connect("ga.db")
+        cursor = connection.cursor()
+        fetchLevel = """SELECT level FROM CLIENT WHERE username = ?"""
+        if not username == None:
+            cursor.execute(fetchLevel, (username,))
+            level = int(cursor.fetchone()[0])
+            if level == 1:
+                self.show_frame(smm.MainMenuStaff)
+            elif level == 0:
+                self.show_frame(cmm.MainMenuClient)
+            else:
+                pass
+        else:
+            pass
+        fetchID = """SELECT client_id FROM CLIENT WHERE username = ?"""
+        cursor.execute(fetchID, (username,))
+        global Aid
+        Aid = int(cursor.fetchone()[0])
+        self.accountID = Aid
+        cursor.close()
 
 app = window()
 app.mainloop()

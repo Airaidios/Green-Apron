@@ -98,8 +98,15 @@ class ClientOrderView(tk.Frame):
             width = 25,
             command = lambda: self.populateTable(
                 self.tree,
-                accountID
+                controller.accountID
             )
+        )
+        self.buttonRefresh.grid(
+            row = 10,
+            column = 1,
+            sticky = "ns",
+            pady = 10,
+            padx = 10
         )
 
     #refresh table
@@ -112,7 +119,7 @@ class ClientOrderView(tk.Frame):
         connection = sql.connect("ga.db")
         cursor = connection.cursor()
         insert = """SELECT * FROM ("ORDER") WHERE (client_id) = ?"""
-        cursor.execute(insert, aid)
+        cursor.execute(insert, (aid,))
         i = 0
         for row in cursor:
             table.insert(

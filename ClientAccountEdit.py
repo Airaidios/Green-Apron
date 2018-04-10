@@ -19,8 +19,6 @@ class ClientAccountEdit(tk.Frame):
             parent
         )
 
-        #Account token
-        accountID = controller.accountID
 
         #Styling
         self.configure(bg = "gray20")
@@ -279,7 +277,7 @@ class ClientAccountEdit(tk.Frame):
                 self.package.get(),
                 self.diet.get(),
                 self.entryMail.get(),
-                accountID
+                controller.accountID
             )
         )
         self.buttonSave.grid(

@@ -1,7 +1,7 @@
 #imports
 import tkinter as tk 
 import sqlite3 as sql 
-import ClientAccountMenu as cam 
+import ClientAccountMenu as cam
 
 #main class
 class ClientAccountView(tk.Frame):
@@ -235,7 +235,7 @@ class ClientAccountView(tk.Frame):
                 self.displayPackage,
                 self.displayDiet,
                 self.displayMail,
-                accountID
+                controller.accountID
             )
         )
         self.buttonRefresh.grid(
@@ -257,18 +257,25 @@ class ClientAccountView(tk.Frame):
     ):
         connection = sql.connect("ga.db")
         cursor = connection.cursor()
-        fetchusername = """SELECT fname FROM CLIENT WHERE client_id = ?"""
+        fetchUsername = """SELECT username FROM CLIENT WHERE client_id = ?"""
         fetchAddress = """SELECT address FROM CLIENT WHERE client_id = ?"""
         fetchPackage = """SELECT package FROM CLIENT WHERE client_id = ?"""
         fetchDiet = """SELECT diet_req FROM CLIENT WHERE client_id = ?"""
         fetchMail = """SELECT email FROM CLIENT WHERE client_id = ?"""
-        username = cursor.execute(fetchusername, aid)
-        Address = cursor.execute(fetchAddress, aid)
-        Package = cursor.execute(fetchPackage, aid)
-        Diet = cursor.execute(fetchDiet, aid)
-        Mail = cursor.execute(fetchMail, aid)
-        usernamedisplay.configure(text = username)
+        print(aid)
+        cursor.execute(fetchUsername, (aid,))
+        Username = str(cursor.fetchone()[0])
+        cursor.execute(fetchAddress, (aid,))
+        Address = str(cursor.fetchone()[0])
+        cursor.execute(fetchPackage, (aid,))
+        Package = str(cursor.fetchone()[0])
+        cursor.execute(fetchDiet, (aid,))
+        Diet = str(cursor.fetchone()[0])
+        cursor.execute(fetchMail, (aid,))
+        Mail = str(cursor.fetchone()[0])
+        usernamedisplay.configure(text = Username)
         addressdisplay.configure(text = Address)
         packagedisplay.configure(text = Package)
         dietdisplay.configure(text = Diet)
         maildisplay.configure(text = Mail)
+        connection.close()
