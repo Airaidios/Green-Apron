@@ -69,31 +69,15 @@ class ClientAccountEdit(tk.Frame):
         )
 
         #First name 
-        self.labelusername = tk.Label(
+        self.labelUsername = tk.Label(
             self,
-            text = "username",
+            text = "USERNAME",
             font = controller.SMALL_FONT,
             fg = "white",
             bg = "gray20"
         )
-        self.labelusername.grid(
+        self.labelUsername.grid(
             row = 1,
-            column = 0,
-            sticky = "ns",
-            pady = 10,
-            padx = 10
-        )
-
-        #
-        self.label = tk.Label(
-            self,
-            text = "",
-            font = controller.SMALL_FONT,
-            fg = "white",
-            bg = "gray20"
-        )
-        self.label.grid(
-            row = 2,
             column = 0,
             sticky = "ns",
             pady = 10,
@@ -109,7 +93,7 @@ class ClientAccountEdit(tk.Frame):
             bg = "gray20",
         )
         self.labelAddress.grid(
-            row = 3,
+            row = 2,
             column = 0,
             sticky = "ns",
             pady = 10,
@@ -125,7 +109,7 @@ class ClientAccountEdit(tk.Frame):
             bg = "gray20"
         )
         self.labelPackage.grid(
-            row = 4,
+            row = 3,
             column = 0,
             sticky = "ns",
             pady = 10,
@@ -141,7 +125,7 @@ class ClientAccountEdit(tk.Frame):
             bg = "gray20"
         )
         self.labelDiet.grid(
-            row = 5,
+            row = 4,
             column = 0,
             sticky = "ns",
             pady = 10,
@@ -157,7 +141,7 @@ class ClientAccountEdit(tk.Frame):
             bg = "gray20"
         )
         self.labelMail.grid(
-            row = 6,
+            row = 5,
             column = 0,
             sticky = "ns",
             pady = 10,
@@ -167,15 +151,15 @@ class ClientAccountEdit(tk.Frame):
         #Entries
 
         #username 
-        self.entryusername = tk.Entry(
+        self.entryUsername = tk.Entry(
             self,
             bg = "gray30",
             fg = "white",
             bd = 2
         )
-        self.entryusername.grid(
+        self.entryUsername.grid(
             row = 1,
-            column = 1,
+            column = 2,
             sticky = "ns",
             pady = 10,
             padx = 10
@@ -189,7 +173,7 @@ class ClientAccountEdit(tk.Frame):
             bd = 2
         )
         self.entryAddress.grid(
-            row = 3,
+            row = 2,
             column = 1,
             sticky = "ns",
             pady = 10,
@@ -204,7 +188,7 @@ class ClientAccountEdit(tk.Frame):
             bd = 2
         )
         self.entryMail.grid(
-            row = 6,
+            row = 5,
             column = 1,
             sticky = "ns",
             pady = 10,
@@ -220,7 +204,7 @@ class ClientAccountEdit(tk.Frame):
             *self.packs
         )
         self.popPack.grid(
-            row = 4,
+            row = 3,
             column = 1,
             sticky = "ns",
             pady = 10,
@@ -234,7 +218,7 @@ class ClientAccountEdit(tk.Frame):
             *self.reqs
         )
         self.popDiet.grid(
-            row = 5,
+            row = 4,
             column = 1,
             sticky = "ns",
             pady = 10,
@@ -271,8 +255,8 @@ class ClientAccountEdit(tk.Frame):
             bg = "gray10",
             activeforeground = "white",
             activebackground = "#44D276",
-            command = self.updateAccount(
-                self.entryusername.get(),
+            command = lambda: self.updateAccount(
+                self.entryUsername.get(),
                 self.entryAddress.get(),
                 self.package.get(),
                 self.diet.get(),
@@ -304,7 +288,7 @@ class ClientAccountEdit(tk.Frame):
         Email = (email, aid)
         connection = sql.connect("ga.db")
         cursor = connection.cursor()
-        addusername = """UPDATE CLIENT SET (fname) = (?) WHERE (client_id) = ?"""
+        addusername = """UPDATE CLIENT SET (username) = (?) WHERE (client_id) = ?"""
         addAddress = """UPDATE CLIENT SET (address) = (?) WHERE (client_id) = ?"""
         addPackage = """UPDATE CLIENT SET (package) = (?) WHERE (client_id) = ?"""
         addDiet = """UPDATE CLIENT SET (diet_req) = (?) WHERE (client_id) = ?"""
@@ -313,10 +297,13 @@ class ClientAccountEdit(tk.Frame):
             if username.isalpha() == True:
                 cursor.execute(addusername, Username)
         if not address == None:
-            if address.isalpha() == True:
-                cursor.execute(addAddress, Address)
+            if address[0:2].isdecimal() == True:
+                if address[4:].isalpha() == True:
+                    cursor.execute(addAddress, Address)
         if not email == None:
+            print("Email presence check pass")
             if email.isalpha() == True:
+                print("Email type check pass")
                 cursor.execute(addEmail, Email)
         cursor.execute(addPackage, Package)
         cursor.execute(addDiet, Diet)

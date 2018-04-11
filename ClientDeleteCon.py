@@ -85,7 +85,7 @@ class ClientDeleteCon(tk.Frame):
             bg = "gray30",
             font = controller.SMALL_FONT,
             width = 25,
-            command = lambda: self.deleteAccount(accountID)
+            command = lambda: self.deleteAccount(controller.accountID)
         )
         self.buttonConfirm.grid(
             row = 3,

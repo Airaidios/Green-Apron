@@ -107,7 +107,7 @@ class ClientOrderAdd(tk.Frame):
             width = 25,
             command = lambda: self.saveOrder(
                 self.entryKit.get(),
-                accountID
+                controller.accountID
             )
         )
         self.buttonSave.grid(
@@ -124,12 +124,13 @@ class ClientOrderAdd(tk.Frame):
         kid,
         aid
     ):
+        KitAccount = (kid, aid)
         connection = sql.connect("ga.db")
         cursor = connection.cursor()
-        add = """INSERT INTO ORDER (kit_id, client_id) VALUES (?, ?)"""
+        add = """INSERT INTO ("ORDER") (kit_id, client_id) VALUES (?, ?)"""
         if not kid == None:
             if kid.isdecimal() == True:
-                cursor.execute(add, kid, aid)
+                cursor.execute(add, KitAccount)
             else:
                 pass
         else:
