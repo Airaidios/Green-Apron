@@ -136,7 +136,6 @@ class Login(tk.Frame):
             padx = 10
         )
 
-
         #Password entry
         self.entryPass = tk.Entry(
             self,

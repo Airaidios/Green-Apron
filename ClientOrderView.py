@@ -87,7 +87,49 @@ class ClientOrderView(tk.Frame):
         )
         self.tree.configure(yscrollcommand = self.scroll.set)
 
+        #Entries
+
+        #Search bar
+        self.entrySearch = tk.Entry(
+            self,
+            fg = "white",
+            bg = "gray30",
+            bd = 2,
+            width = 25
+        )
+        self.entrySearch.grid(
+            row = 5,
+            column = 0,
+            sticky = "ns",
+            pady = 10,
+            padx = 10
+        )
+
         #Buttons
+
+        #Search button
+        self.buttonSearch = tk.Button(
+            self,
+            text = "SEARCH",
+            fg = "#44d276",
+            bg = "gray10",
+            activeforeground = "white",
+            activebackground = "#44d276",
+            font = controller.SMALL_FONT,
+            width = 25,
+            command = lambda: self.searchOrder(
+                self.entrySearch.get(),
+                self.tree,
+                controller.accountID
+            )
+        )
+        self.buttonSearch.grid(
+            row = 5,
+            column = 1,
+            sticky = "ns",
+            pady = 10,
+            padx = 10
+        )
 
         #Return button
         self.buttonReturn = tk.Button(
@@ -152,3 +194,28 @@ class ClientOrderView(tk.Frame):
                 values = (row[1], row[2])
             )
             i += 1
+        connection.close()
+
+    def searchOrder(
+        self,
+        term,
+        table,
+        aid
+    ):
+        table.delete(*table.get_children())
+        connection = sql.connect("ga.db")
+        cursor = connection.cursor()
+        search = """SELECT * FROM "ORDER" WHERE (?) IN (order_id, kit_id) AND (client_id) = ?"""
+        Term = (term, aid)
+        cursor.execute(search, Term)
+        print(cursor.fetchall())
+        i = 0
+        for row in cursor.fetchall():
+            table.insert(
+                "",
+                "end",
+                text = str(i),
+                values = (row[1], row[2])
+            )
+            i += 1
+        connection.close()
