@@ -47,7 +47,8 @@ class ClientOrderView(tk.Frame):
             self,
             style = "Custom.Treeview",
             columns = (
-                "Kit"
+                "Account ID",
+                "Kit ID"
             )
         )
         self.tree.heading(
@@ -56,7 +57,11 @@ class ClientOrderView(tk.Frame):
         )
         self.tree.heading(
             "#1",
-            text = "Kit"
+            text = "Account ID"
+        )
+        self.tree.heading(
+            "#2",
+            text = "Kit ID"
         )
         self.tree.grid(
             row = 1,
@@ -126,6 +131,6 @@ class ClientOrderView(tk.Frame):
                 "",
                 "end",
                 text = str(i),
-                values = (row[1])
+                values = (row[1], row[2])
             )
             i += 1

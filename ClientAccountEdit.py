@@ -159,7 +159,7 @@ class ClientAccountEdit(tk.Frame):
         )
         self.entryUsername.grid(
             row = 1,
-            column = 2,
+            column = 1,
             sticky = "ns",
             pady = 10,
             padx = 10

@@ -2,6 +2,7 @@
 import tkinter as tk 
 import sqlite3 as sql 
 import ClientAccountMenu as cam 
+import Login as l
 
 #main class 
 class ClientDeleteCon(tk.Frame):
@@ -85,10 +86,10 @@ class ClientDeleteCon(tk.Frame):
             bg = "gray30",
             font = controller.SMALL_FONT,
             width = 25,
-            command = lambda: self.deleteAccount(controller.accountID)
+            command = lambda: self.deleteAccount(controller.accountID, controller)
         )
         self.buttonConfirm.grid(
-            row = 3,
+            row = 2,
             column = 1,
             sticky = "ns",
             pady = 10,
@@ -97,7 +98,8 @@ class ClientDeleteCon(tk.Frame):
 
     def deleteAccount(
         self,
-        aid
+        aid,
+        controller
     ):
         connection = sql.connect("ga.db")
         cursor = connection.cursor()
@@ -106,17 +108,17 @@ class ClientDeleteCon(tk.Frame):
             select,
             (aid,)
         )
-        if aid.isdecimal() == True:
-            if cursor.fetchone():
-                delete = """DELETE FROM CLIENT WHERE client_id = ?"""
-                cursor.execute(
-                    delete,
-                    aid
-                )
-                connection.commit()
-            else:
-                pass 
+        if cursor.fetchone():
+            delete = """DELETE FROM CLIENT WHERE client_id = ?"""
+            cursor.execute(
+                delete,
+                (aid,)
+            )
+            connection.commit()
         else:
             pass
+        controller.show_frame(l.Login)
+        connection.comitt()
+        cursor.close()
 
 

@@ -127,7 +127,7 @@ class ClientOrderAdd(tk.Frame):
         KitAccount = (kid, aid)
         connection = sql.connect("ga.db")
         cursor = connection.cursor()
-        add = """INSERT INTO ("ORDER") (kit_id, client_id) VALUES (?, ?)"""
+        add = """INSERT INTO "ORDER" (kit_id, client_id) VALUES (?, ?)"""
         if not kid == None:
             if kid.isdecimal() == True:
                 cursor.execute(add, KitAccount)

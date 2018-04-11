@@ -93,7 +93,8 @@ class StaffAccountView(tk.Frame):
             style = "Custom.Treeview",
             columns = (
                 "Account ID",
-                "First Name",
+                "Order ID",
+                "Username",
                 "Address",
                 "Package",
                 "Diet Reqs",
@@ -107,11 +108,11 @@ class StaffAccountView(tk.Frame):
         )
         self.tree.heading(
             "#1",
-            text = "First Name"
+            text = "Username"
         )
         self.tree.heading(
             "#2",
-            text = "Address"
+            text = "Address",
         )
         self.tree.heading(
             "#3",
@@ -126,12 +127,47 @@ class StaffAccountView(tk.Frame):
             text = "Email",
         )
         self.tree.heading(
-            "#7",
-            text = "Level",
+            "#6",
+            text = "Level"
+        )
+        self.tree.column(
+            "#0",
+            minwidth = 50,
+            width = 50
+        )
+        self.tree.column(
+            "#1",
+            minwidth = 100,
+            width = 100
+        )
+        self.tree.column(
+            "#2",
+            minwidth = 100,
+            width = 150
+        )
+        self.tree.column(
+            "#3",
+            minwidth = 50,
+            width = 50
+        )
+        self.tree.column(
+            "#4",
+            minwidth = 100,
+            width = 100
+        )
+        self.tree.column(
+            "#5",
+            minwidth = 100,
+            width = 150
+        )
+        self.tree.column(
+            "#6",
+            minwidth = 50,
+            width = 50
         )
         self.tree.grid(
             row = 3,
-            columnspan = 4,
+            columnspan = 3,
             sticky = "ns"
         )
     
@@ -150,6 +186,6 @@ class StaffAccountView(tk.Frame):
                 "",
                 "end",
                 text = str(i),
-                values = (row[1], row[2])
+                values = (row[1], row[2], row[3], row[4], row[5], row[6])
             )
             i += 1

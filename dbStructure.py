@@ -14,14 +14,12 @@ db_name = "ga.db"
 clientTable = """CREATE TABLE IF NOT EXISTS CLIENT
     (
     client_id integer NOT NULL PRIMARY KEY AUTOINCREMENT,
-    order_id integer,
     username text,
     address text,
     package integer,
     diet_req text,
     email text,
-    level integer,
-    foreign key(order_id) references "ORDER"(order_id)on update cascade on delete cascade
+    level integer
     )"""
 executeSQL(db_name, clientTable)
 

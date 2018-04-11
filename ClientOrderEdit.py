@@ -159,7 +159,7 @@ class ClientOrderEdit(tk.Frame):
         Kit = (kid, oid)
         connection = sql.connect("ga.db")
         cursor = connection.cursor()
-        update = """UPDATE ORDER SET (kit_id) = (?) WHERE (order_id) = ?"""
+        update = """UPDATE "ORDER" SET (kit_id) = (?) WHERE (order_id) = ?"""
         if not kid == None:
             if kid.isdecimal() == True:
                 cursor.execute(update, Kit)

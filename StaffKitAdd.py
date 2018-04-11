@@ -199,23 +199,14 @@ class AddKit(tk.Frame):
     ):
         connection = sql.connect("ga.db")
         cursor = connection.cursor()
-        addKit = """INSERT INTO KIT (kit_name) VALUES (?)"""
-        addSize = """INSERT INTO KIT (size) VALUES (?)"""
-        addPrice = """INSERT INTO KIT (price) VALUES (?)"""
-        if not (len(name)) == 0:
-            if name.isalpha() == True:
-                cursor.execute(addKit, name)
-            else:
-                pass 
+        Data = (name, size, price)
+        addKit = """INSERT INTO KIT (kit_name, size, price) VALUES (?, ?, ?)"""
+        if not (len(name)) == 0 and name.isalpha() == True:
+                if not (len(price)) == 0 and price.isdecimal() == True:
+                    cursor.execute(addKit, Data)
+                else:
+                    pass 
         else:
             pass 
-        cursor.execute(addSize, size)
-        if not (len(price)) == 0:
-            if price.isdecimal() == True:
-                cursor.execute(addPrice, price)
-            else:
-                pass 
-        else:
-             pass 
         connection.commit()
         cursor.close()
