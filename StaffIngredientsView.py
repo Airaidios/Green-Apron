@@ -149,6 +149,21 @@ class ViewIngredients(tk.Frame):
             padx = 10
         )
 
+        #Scrollbar for treeview
+        self.scroll = tk.ttk.Scrollbar(
+            self,
+            orient = "vertical",
+            command = self.tree.yview
+        )
+        self.scroll.grid(
+            row = 3,
+            columnspan = 5,
+            sticky = "nse",
+            pady = 10,
+            padx = 10
+        )
+        self.tree.configure(yscrollcommand = self.scroll.set)
+
     #update treeview
     def updateTable(
         self,

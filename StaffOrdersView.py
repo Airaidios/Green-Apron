@@ -129,6 +129,20 @@ class ActiveOrder(tk.Frame):
             width = 150
         )
 
+        #Scrollbar for treeview
+        self.scroll = tk.ttk.Scrollbar(
+            self,
+            orient = "vertical",
+            command = self.tree.yview
+        )
+        self.scroll.grid(
+            row = 3,
+            columnspan = 4,
+            sticky = "nse",
+            pady = 10,
+            padx = 10
+        )
+
     #populate treeview with records from database
     def populateTable(
         self,
