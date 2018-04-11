@@ -90,7 +90,6 @@ class ViewKit(tk.Frame):
             self,
             style = "Custom.Treeview",
             columns = (
-                "Kit ID",
                 "Kit Name",
                 "Price",
                 "Size"
@@ -112,10 +111,32 @@ class ViewKit(tk.Frame):
             "#3",
             text = "Size"
         )
+        self.tree.column(
+            "#0",
+            minwidth = 50,
+            width = 50
+        )
+        self.tree.column(
+            "#1",
+            minwidth = 100,
+            width = 100
+        )
+        self.tree.column(
+            "#2",
+            minwidth = 50,
+            width = 50
+        )
+        self.tree.column(
+            "#3",
+            minwidth = 50,
+            width = 50
+        )
         self.tree.grid(
             row = 3,
             columnspan = 4,
-            sticky = "ns"
+            sticky = "ns",
+            pady = 10,
+            padx = 10
         )
 
     def updateTable(

@@ -66,7 +66,9 @@ class ClientOrderView(tk.Frame):
         self.tree.grid(
             row = 1,
             columnspan = 3,
-            sticky = "ns"
+            sticky = "ns",
+            pady = 10,
+            padx = 10
         )
 
         #Buttons

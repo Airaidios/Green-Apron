@@ -90,7 +90,6 @@ class ViewIngredients(tk.Frame):
             self,
             style = "Custom.Treeview",
             columns  = (
-                "Ingredient ID",
                 "Name",
                 "Quantity",
                 "Allergen",
@@ -117,10 +116,37 @@ class ViewIngredients(tk.Frame):
             "#4",
             text = "Type"
         )
+        self.tree.column(
+            "#0",
+            minwidth = 70,
+            width = 70
+        )
+        self.tree.column(
+            "#1",
+            minwidth = 150,
+            width = 150
+        )
+        self.tree.column(
+            "#2",
+            minwidth = 50,
+            width = 50
+        )
+        self.tree.column(
+            "#3",
+            minwidth = 150,
+            width = 150
+        )
+        self.tree.column(
+            "#4",
+            minwidth = 100,
+            width = 100
+        )
         self.tree.grid(
             row = 3,
             columnspan = 5,
-            sticky = "ns"
+            sticky = "ns",
+            pady = 10,
+            padx = 10
         )
 
     #update treeview

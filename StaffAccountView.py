@@ -35,7 +35,6 @@ class StaffAccountView(tk.Frame):
         self.label.grid(
             row = 0,
             column = 1,
-            columnspan = 2,
             sticky = "ns",
             pady = 10,
             padx = 10
@@ -58,7 +57,6 @@ class StaffAccountView(tk.Frame):
         self.buttonReturn.grid(
             row = 10,
             column = 0,
-            columnspan = 2,
             sticky = "ns",
             pady = 10,
             padx = 10
@@ -79,7 +77,6 @@ class StaffAccountView(tk.Frame):
         self.buttonRefresh.grid(
             row = 10,
             column = 2,
-            columnspan = 2,
             sticky = "ns",
             pady = 10,
             padx = 10
@@ -92,8 +89,6 @@ class StaffAccountView(tk.Frame):
             self,
             style = "Custom.Treeview",
             columns = (
-                "Account ID",
-                "Order ID",
                 "Username",
                 "Address",
                 "Package",
@@ -168,7 +163,9 @@ class StaffAccountView(tk.Frame):
         self.tree.grid(
             row = 3,
             columnspan = 3,
-            sticky = "ns"
+            sticky = "ns",
+            pady = 10,
+            padx = 10
         )
     
     def populateInfo(

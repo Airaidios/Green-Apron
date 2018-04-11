@@ -92,7 +92,6 @@ class StaffRecipeView(tk.Frame):
             self,
             style = "Custom.Treeview",
             columns = (
-                "Recipe ID",
                 "Recipe Name",
                 "Culture",
                 "Servings",
@@ -119,10 +118,37 @@ class StaffRecipeView(tk.Frame):
             "#4",
             text = "Prep Time"
         )
+        self.tree.column(
+            "#0",
+            minwidth = 70,
+            width = 70
+        )
+        self.tree.column(
+            "#1",
+            minwidth = 100,
+            width = 100
+        )
+        self.tree.column(
+            "#2",
+            minwidth = 100,
+            width = 100
+        )
+        self.tree.column(
+            "#3",
+            minwidth = 50,
+            width = 50
+        )
+        self.tree.column(
+            "#4",
+            minwidth = 50,
+            width = 70
+        )
         self.tree.grid(
             row = 3,
             columnspan = 4,
-            sticky = "ns"
+            sticky = "ns",
+            pady = 10,
+            padx = 10
         )
 
     #populate treeview with records from database

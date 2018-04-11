@@ -112,10 +112,32 @@ class ClientFoodView(tk.Frame):
             "#3",
             text = "Size"
         )
+        self.tree.column(
+            "#0",
+            minwidth = 70,
+            width = 70
+        )
+        self.tree.column(
+            "#1",
+            minwidth = 150,
+            width = 150
+        )
+        self.tree.column(
+            "#2",
+            minwidth = 70,
+            width = 70
+        )
+        self.tree.column(
+            "#3",
+            minwidth = 50,
+            width = 50
+        )
         self.tree.grid(
             row = 3,
             columnspan = 4,
-            sticky = "ns"
+            sticky = "ns",
+            pady = 10,
+            padx = 10
         )
 
     def updateTable(

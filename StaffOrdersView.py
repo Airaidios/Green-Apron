@@ -113,6 +113,21 @@ class ActiveOrder(tk.Frame):
             columnspan = 4,
             sticky = "ns"
         )
+        self.tree.column(
+            "#0",
+            minwidth = 50,
+            width = 150
+        )
+        self.tree.column(
+            "#1",
+            minwidth = 50,
+            width = 150
+        )
+        self.tree.column(
+            "#2",
+            minwidth = 50,
+            width = 150
+        )
 
     #populate treeview with records from database
     def populateTable(
