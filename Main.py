@@ -73,10 +73,9 @@ class window(tk.Tk):
             expand = True
         )
 
-        #Window icon - Currently broken, don't know why
-        """
-        self.iconbitmap(default = "icon.bmp")
-        """
+        #Styling
+        self.configure(bg = "gray20")
+        self.minsize(width = 626, height = 470)
 
         style = tk.ttk.Style()
         style.element_create("Custom.Treeheading.border", "from", "default")

@@ -38,7 +38,7 @@ class ClientOrderMenu(tk.Frame):
         )
         self.labelTitle.grid(
             row = 0,
-            column = 1,
+            column = 0,
             columnspan = 2,
             sticky = "ns",
             pady = 10,
@@ -54,6 +54,8 @@ class ClientOrderMenu(tk.Frame):
             font = controller.SMALL_FONT,
             fg = "#44D276",
             bg = "gray10",
+            activeforeground = "white",
+            activebackground = "#44d276",
             width = 25,
             command = lambda: controller.show_frame(coa.ClientOrderAdd)
         )
@@ -73,6 +75,8 @@ class ClientOrderMenu(tk.Frame):
             font = controller.SMALL_FONT,
             fg = "#44D276",
             bg = "gray10",
+            activeforeground = "white",
+            activebackground = "#44d276",
             width = 25,
             command = lambda: controller.show_frame(coe.ClientOrderEdit)
         )
@@ -92,6 +96,8 @@ class ClientOrderMenu(tk.Frame):
             font = controller.SMALL_FONT,
             fg = "#44D276",
             bg = "gray10",
+            activeforeground = "white",
+            activebackground = "#44d276",
             width = 25,
             command = lambda: controller.show_frame(cov.ClientOrderView)
         )
@@ -111,6 +117,8 @@ class ClientOrderMenu(tk.Frame):
             font = controller.SMALL_FONT,
             fg = "#44D276",
             bg = "gray10",
+            activeforeground = "white",
+            activebackground = "#44d276",
             width = 25,
             command = lambda: self.deleteItem(
                 self.entryDelete.get()
@@ -131,6 +139,8 @@ class ClientOrderMenu(tk.Frame):
             font = controller.SMALL_FONT,
             fg = "#44D276",
             bg = "gray10",
+            activeforeground = "white",
+            activebackground = "#44d276",
             width = 25,
             command = lambda: controller.show_frame(cmm.MainMenuClient)
         )

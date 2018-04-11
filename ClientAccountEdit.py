@@ -155,7 +155,8 @@ class ClientAccountEdit(tk.Frame):
             self,
             bg = "gray30",
             fg = "white",
-            bd = 2
+            bd = 2,
+            width = 25
         )
         self.entryUsername.grid(
             row = 1,
@@ -170,7 +171,8 @@ class ClientAccountEdit(tk.Frame):
             self,
             fg = "white",
             bg = "gray30",
-            bd = 2
+            bd = 2,
+            width = 25
         )
         self.entryAddress.grid(
             row = 2,
@@ -185,7 +187,8 @@ class ClientAccountEdit(tk.Frame):
             self,
             fg = "white",
             bg = "gray30",
-            bd = 2
+            bd = 2,
+            width = 25
         )
         self.entryMail.grid(
             row = 5,
@@ -236,6 +239,7 @@ class ClientAccountEdit(tk.Frame):
             bg = "gray10",
             activeforeground = "white",
             activebackground = "#44D276",
+            width = 25,
             command = lambda: controller.show_frame(cam.ClientAccountMenu)
         )
         self.buttonReturn.grid(
@@ -255,6 +259,7 @@ class ClientAccountEdit(tk.Frame):
             bg = "gray10",
             activeforeground = "white",
             activebackground = "#44D276",
+            width = 25,
             command = lambda: self.updateAccount(
                 self.entryUsername.get(),
                 self.entryAddress.get(),

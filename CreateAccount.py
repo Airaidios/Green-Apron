@@ -2,6 +2,7 @@
 import tkinter as tk 
 import Login as l
 import sqlite3 as sql
+import hashlib as hsh
 
 #Main class 
 class CreateAccount(tk.Frame):
@@ -147,6 +148,37 @@ class CreateAccount(tk.Frame):
             padx = 10
         )
 
+        #Password
+        self.labelPass = tk.Label(
+            self,
+            text = "PASSWORD",
+            font = controller.SMALL_FONT,
+            fg = "white",
+            bg = "gray20"
+        )
+        self.labelPass.grid(
+            row = 6,
+            column = 0,
+            sticky = "ns",
+            pady = 10,
+            padx = 10
+        )
+
+        self.labelConfirm = tk.Label(
+            self,
+            text = "CONFIRM PASSWORD",
+            font = controller.SMALL_FONT,
+            fg = "white",
+            bg = "gray20"
+        )
+        self.labelConfirm.grid(
+            row = 7,
+            column = 0,
+            sticky = "ns",
+            pady = 10,
+            padx = 10
+        )
+
         #Entries
 
         #username 
@@ -154,7 +186,8 @@ class CreateAccount(tk.Frame):
             self,
             bg = "gray30",
             fg = "white",
-            bd = 2
+            bd = 2,
+            width = 25
         )
         self.entryUsername.grid(
             row = 1,
@@ -169,7 +202,8 @@ class CreateAccount(tk.Frame):
             self,
             fg = "white",
             bg = "gray30",
-            bd = 2
+            bd = 2,
+            width = 25
         )
         self.entryAddress.grid(
             row = 2,
@@ -184,10 +218,41 @@ class CreateAccount(tk.Frame):
             self,
             fg = "white",
             bg = "gray30",
-            bd = 2
+            bd = 2,
+            width = 25
         )
         self.entryMail.grid(
             row = 5,
+            column = 1,
+            sticky = "ns",
+            pady = 10,
+            padx = 10
+        )
+
+        self.entryPass = tk.Entry(
+            self,
+            fg = "white",
+            bg = "gray30",
+            bd = 2,
+            width = 25
+        )
+        self.entryPass.grid(
+            row = 6,
+            column = 1,
+            sticky = "ns",
+            pady = 10,
+            padx = 10
+        )
+
+        self.entryConfirm = tk.Entry(
+            self,
+            fg = "white",
+            bg = "gray30",
+            bd = 2,
+            width = 25
+        )
+        self.entryConfirm.grid(
+            row = 7,
             column = 1,
             sticky = "ns",
             pady = 10,
@@ -235,10 +300,11 @@ class CreateAccount(tk.Frame):
             bg = "gray10",
             activeforeground = "white",
             activebackground = "#44D276",
-            command = controller.show_frame(l.Login)
+            width = 25,
+            command = lambda: controller.show_frame(l.Login)
         )
         self.buttonReturn.grid(
-            row = 6,
+            row = 8,
             column = 0,
             sticky = "ns",
             pady = 10,
@@ -254,49 +320,82 @@ class CreateAccount(tk.Frame):
             bg = "gray10",
             activeforeground = "white",
             activebackground = "#44D276",
-            command = self.updateAccount(
+            width = 25,
+            command = lambda: self.createAccount(
                 self.entryUsername.get(),
                 self.entryAddress.get(),
                 self.package.get(),
                 self.diet.get(),
                 self.entryMail.get(),
+                self.entryPass.get(),
+                self.entryConfirm.get(),
+                controller
             )
         )
         self.buttonSave.grid(
-            row = 6,
+            row = 8,
             column = 1,
             sticky = "ns",
             padx = 10,
             pady = 10
         )
 
-    def updateAccount(
+    def createAccount(
         self,
         username,
         address,
         package,
         diet,
         email,
+        password,
+        password_confirm,
+        controller
     ):
         connection = sql.connect("ga.db")
         cursor = connection.cursor()
-        addUsername = """INSERT INTO CLIENT (fname) VALUES (?)"""
-        addAddress = """INSERT INTO CLIENT (address) VALUES (?)"""
-        addPackage = """INSERT INTO CLIENT (package) VALUES (?)"""
-        addDiet = """INSERT INTO CLIENT (diet_req) VALUES (?)"""
-        addEmail = """INSERT INTO CLIENT (email) VALUES (?)"""
-        if not username == None:
-            if username.isalpha() == True:
-                cursor.execute(addUsername, username)
-        if not address == None:
-            if address[0:2].isdecimal() == True:
-                if address[4:].isalpha() == True:
-                    cursor.execute(addAddress, address)
-        cursor.execute(addPackage, package)
-        cursor.execute(addDiet, (diet,))
-        if not email == None:
-            if email.find("@")!=-1:
-                if email[-5:].find(".")!=-1:
-                    cursor.execute(addEmail, email)
+        #Find most recently created record to insert level into
+        fetchLatestRecord = """SELECT client_id FROM CLIENT ORDER BY client_id DESC LIMIT 1"""
+        #Create record with validated data
+        addData = """INSERT INTO CLIENT (username, address, package, diet_req, email, password) VALUES (?, ?, ?, ?, ?, ?)"""
+        #Manually update most record with client access level
+        insertLevel = """UPDATE CLIENT SET (level) = (?) WHERE (client_id) = ?"""
+        #Hash password
+        passwordhash = self.encryptPass(password)
+        #Data to be inserted
+        newData = (username, address, package, diet, email, passwordhash)
+        #Username validation
+        if not username == None and username.isalpha() == True:
+            #Address validation
+            if not address == None and address[0:2].isdecimal() == True and address[4:].isalpha() == True:
+                #Package validation
+                if not package == None:
+                    #Diet requirements validation
+                    if not diet == None:
+                        #Email address validation - I use a simple check here as the only way to ensure the address
+                        #is correct is to send a confirmation email to the entered address
+                        if not email == None and email.find("@") != -1 and email.find(".") != -1:
+                            #Ensure entered password is wanted password
+                            if password == password_confirm:
+                                #Create populated record
+                                cursor.execute(addData, newData)
+                                #Find the ID of that record
+                                cursor.execute(fetchLatestRecord)
+                                #Assign result of above execution to a variable
+                                latestRecord = cursor.fetchone()[0]
+                                #Define tuple to be inserted, this includes the client access level (0) and the most recent record ID (latestRecord)
+                                levelData = (0, latestRecord)
+                                #Insert level into newest record
+                                cursor.execute(insertLevel, levelData)
+                                #Bring user back to login menu
+                                controller.show_frame(l.Login)
         connection.commit()
         cursor.close()
+
+    #Pad and encrypt password
+    def encryptPass(
+        self,
+        password
+    ):
+
+        hashed = hsh.sha256(password.encode("utf-8")).hexdigest()
+        return hashed

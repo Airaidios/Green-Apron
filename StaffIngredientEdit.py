@@ -156,7 +156,8 @@ class EditIngredient(tk.Frame):
             self,
             bd = 2,
             bg = "gray30",
-            fg = "white"
+            fg = "white",
+            width = 25
         )
         self.entryID.grid(
             row = 1,
@@ -171,7 +172,8 @@ class EditIngredient(tk.Frame):
             self,
             bd = 2,
             bg = "gray30",
-            fg = "white"
+            fg = "white",
+            width = 25
         )
         self.entryName.grid(
             row = 2,
@@ -186,7 +188,8 @@ class EditIngredient(tk.Frame):
             self,
             bd = 2,
             bg = "gray30",
-            fg = "white"
+            fg = "white",
+            width = 25
         )
         self.entryQuant.grid(
             row = 3,

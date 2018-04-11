@@ -35,6 +35,7 @@ class ClientOrderAdd(tk.Frame):
         self.labelTitle.grid(
             row = 0,
             column = 0,
+            columnspan = 2,
             sticky = "ns",
             pady = 10,
             padx = 10
@@ -63,7 +64,8 @@ class ClientOrderAdd(tk.Frame):
             self,
             fg = "white",
             bg = "gray30",
-            bd = 2
+            bd = 2,
+            width = 25
         )
         self.entryKit.grid(
             row = 1,

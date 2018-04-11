@@ -4,6 +4,7 @@ import StaffMainMenu as smm
 import ClientMainMenu as cmm
 import sqlite3 as sql
 import CreateAccount as ca
+import hashlib as hsh
 
 #Main class
 class Login(tk.Frame):
@@ -47,8 +48,7 @@ class Login(tk.Frame):
         self.logoLabel.image = self.logoScaled
         self.logoLabel.grid(
             row = 0,
-            column = 0,
-            columnspan = 2,
+            column = 1,
             sticky = "nse",
             pady = 10,
             padx = 10
@@ -130,8 +130,8 @@ class Login(tk.Frame):
         )
         self.entryName.grid(
             row = 2,
-            column = 2,
-            sticky = "nsw",
+            column = 1,
+            sticky = "ns",
             pady = 10,
             padx = 10
         )
@@ -147,8 +147,8 @@ class Login(tk.Frame):
         )
         self.entryPass.grid(
             row = 3,
-            column = 2,
-            sticky = "nsw",
+            column = 1,
+            sticky = "ns",
             pady = 10,
             padx = 10
         )
@@ -164,18 +164,18 @@ class Login(tk.Frame):
             bg = "gray10",
             activebackground = "#44D276",
             activeforeground = "white",
-            width = 12,
-            command = lambda: controller.login(
-               self.entryName.get(),
-               self.entryPass.get(),
-               controller,
-               controller.accountID
+            width = 25,
+            command = lambda: self.checkPass(
+                self.entryPass.get(),
+                self.entryName.get(),
+                controller,
+                ca.CreateAccount
             )
         )
         self.buttonLogin.grid(
             row = 4,
             column = 2,
-            sticky = "nsw",
+            sticky = "ns",
             pady = 10,
             padx = 10
         )
@@ -188,7 +188,7 @@ class Login(tk.Frame):
             bg = "gray10",
             activebackground = "#44D276",
             activeforeground = "white",
-            width = 12,
+            width = 25,
             font = controller.SMALL_FONT,
             command = lambda: controller.destroy()
         )
@@ -213,11 +213,31 @@ class Login(tk.Frame):
         )
         self.buttonCreate.grid(
             row = 5,
-            column = 0,
-            columnspan = 2,
+            column = 1,
             sticky = "ns",
             pady = 10,
             padx = 10
         )
 
-        
+    def checkPass(
+        self,
+        password,
+        username,
+        controller,
+        ca
+    ):
+        connection = sql.connect("ga.db")
+        cursor = connection.cursor()
+        cursor.execute("""SELECT password FROM CLIENT WHERE username = ?""", (username,))
+        passwordfetched = cursor.fetchone()[0]
+        passwordhash = hsh.sha256(password.encode("utf-8")).hexdigest()
+        if passwordhash == passwordfetched:
+            controller.login(
+                self.entryName.get(),
+                self.entryPass.get(),
+                controller,
+                controller.accountID
+            )
+        else:
+            pass 
+        connection.close()

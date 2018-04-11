@@ -19,7 +19,8 @@ clientTable = """CREATE TABLE IF NOT EXISTS CLIENT
     package integer,
     diet_req text,
     email text,
-    level integer
+    level integer,
+    password text
     )"""
 executeSQL(db_name, clientTable)
 

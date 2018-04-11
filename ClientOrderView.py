@@ -36,6 +36,7 @@ class ClientOrderView(tk.Frame):
         self.labelTitle.grid(
             row = 0,
             column = 0,
+            columnspan = 2,
             sticky = "ns",
             pady = 10,
             padx = 10
@@ -65,7 +66,7 @@ class ClientOrderView(tk.Frame):
         )
         self.tree.grid(
             row = 1,
-            columnspan = 3,
+            columnspan = 2,
             sticky = "ns",
             pady = 10,
             padx = 10

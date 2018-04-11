@@ -129,7 +129,8 @@ class AddIngredient(tk.Frame):
             self,
             bg = "gray30",
             fg = "white",
-            bd = 2
+            bd = 2,
+            width = 25
         )
         self.entryName.grid(
             row = 1,
