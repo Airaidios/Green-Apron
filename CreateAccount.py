@@ -71,7 +71,7 @@ class CreateAccount(tk.Frame):
         #First name 
         self.labelUsername = tk.Label(
             self,
-            text = "username",
+            text = "USERNAME",
             font = controller.SMALL_FONT,
             fg = "white",
             bg = "gray20"
