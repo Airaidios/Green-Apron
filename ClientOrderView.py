@@ -205,10 +205,9 @@ class ClientOrderView(tk.Frame):
         table.delete(*table.get_children())
         connection = sql.connect("ga.db")
         cursor = connection.cursor()
-        search = """SELECT * FROM "ORDER" WHERE (?) IN (order_id, kit_id) AND (client_id) = ?"""
-        Term = (term, aid)
+        search = """SELECT * FROM "ORDER" WHERE ((?) IN (order_id, kit_id)) AND (client_id) = ?"""
+        Term = (int(term), aid)
         cursor.execute(search, Term)
-        print(cursor.fetchall())
         i = 0
         for row in cursor.fetchall():
             table.insert(

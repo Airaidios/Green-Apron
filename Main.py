@@ -181,7 +181,7 @@ class window(tk.Tk):
         username,
         password,
         controller,
-        aid
+        aid,
     ):
         connection = sql.connect("ga.db")
         cursor = connection.cursor()
