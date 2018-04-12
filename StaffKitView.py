@@ -42,7 +42,48 @@ class ViewKit(tk.Frame):
             padx = 10
         )
 
+        #Entries
+
+        #Search bar
+        self.entrySearch = tk.Entry(
+            self,
+            fg = "white",
+            bg = "gray30",
+            bd = 2,
+            width = 25
+        )
+        self.entrySearch.grid(
+            row = 5,
+            column = 0,
+            sticky = "ns",
+            pady = 10,
+            padx = 10
+        )
+
         #Buttons
+
+        #Search button
+        self.buttonSearch = tk.Button(
+            self,
+            text = "SEARCH",
+            fg = "#44d276",
+            bg = "gray10",
+            activeforeground = "white",
+            activebackground = "#44d276",
+            font = controller.SMALL_FONT,
+            width = 25,
+            command = lambda: self.searchKit(
+                self.entrySearch.get(),
+                self.tree
+            )
+        )
+        self.buttonSearch.grid(
+            row = 5,
+            column = 3,
+            sticky = "ns",
+            pady = 10,
+            padx = 10
+        )
 
         #Return button
         self.buttonReturn = tk.Button(
@@ -175,3 +216,25 @@ class ViewKit(tk.Frame):
                             values = (row[1], row[2], row[3])
                             )
             i += 1
+        connection.close()
+
+    def searchKit(
+        self,
+        term,
+        table
+    ):
+        table.delete(*table.get_children())
+        connection = sql.connect("ga.db")
+        cursor = connection.cursor()
+        search = """SELECT * FROM KIT WHERE (?) IN (kit_id, kit_name, price, size)"""
+        cursor.execute(search, (term,))
+        i = 0
+        for row in cursor.fetchall():
+            table.insert(
+                "",
+                "end",
+                text = str(i),
+                values = (row[1], row[2], row[3])
+            )
+            i += 1
+        connection.close()

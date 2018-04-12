@@ -234,7 +234,8 @@ class CreateAccount(tk.Frame):
             fg = "white",
             bg = "gray30",
             bd = 2,
-            width = 25
+            width = 25,
+            show = "*"
         )
         self.entryPass.grid(
             row = 6,
@@ -249,7 +250,8 @@ class CreateAccount(tk.Frame):
             fg = "white",
             bg = "gray30",
             bd = 2,
-            width = 25
+            width = 25,
+            show = "*"
         )
         self.entryConfirm.grid(
             row = 7,
