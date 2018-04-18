@@ -191,22 +191,21 @@ class AddKit(tk.Frame):
             padx = 10
         )
 
+    #add entered data into a new record in kit table
     def addItem(
         self,
         name,
         size,
         price
     ):
-        connection = sql.connect("ga.db")
-        cursor = connection.cursor()
-        Data = (name, size, price)
+        connection = sql.connect("ga.db") #connect to db
+        cursor = connection.cursor() #init cursor
+        Data = (name, size, price) #create a tuple with new data
+        #Insert entered data into table
         addKit = """INSERT INTO KIT (kit_name, size, price) VALUES (?, ?, ?)"""
-        if not (len(name)) == 0 and name.isalpha() == True:
-                if not (len(price)) == 0 and price.isdecimal() == True:
-                    cursor.execute(addKit, Data)
-                else:
-                    pass 
-        else:
-            pass 
-        connection.commit()
-        cursor.close()
+        if not (len(name)) == 0 and name.isalpha() == True: #name presence and type check
+                if not (len(price)) == 0 and price.isdecimal() == True: #price presence and type check
+                    cursor.execute(addKit, Data) #execute insert
+                    connection.commit() #save changes
+        cursor.close() #close cursor
+        connection.close() #close connection

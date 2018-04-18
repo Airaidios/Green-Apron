@@ -122,6 +122,23 @@ class AddIngredient(tk.Frame):
             padx = 10
         )
 
+        #recipe ID label
+        self.labelRecipeID = tk.Label(
+            self,
+            text = "RECIPE ID",
+            fg = "white",
+            bg = "gray20",
+            font = controller.SMALL_FONT,
+            width = 25
+        )
+        self.labelRecipeID.grid(
+            row = 4,
+            column = 0,
+            sticky = "ns",
+            pady = 10,
+            padx = 10
+        )
+
         #Entries
 
         #Ingredient name entry
@@ -134,6 +151,21 @@ class AddIngredient(tk.Frame):
         )
         self.entryName.grid(
             row = 1,
+            column = 1,
+            sticky = "ns",
+            pady = 10,
+            padx = 10
+        )
+
+        self.entryRecipeID = tk.Entry(
+            self,
+            bg = "gray30",
+            fg = "white",
+            bd = 2,
+            width = 25
+        )
+        self.entryRecipeID.grid(
+            row = 4,
             column = 1,
             sticky = "ns",
             pady = 10,
@@ -185,11 +217,12 @@ class AddIngredient(tk.Frame):
             command = lambda: self.addIngredient(
                 self.entryName.get(),
                 self.allergen_choice.get(),
-                self.type_choice.get()
+                self.type_choice.get(),
+                self.entryRecipeID.get()
             )
         )
         self.buttonSave.grid(
-            row = 4,
+            row = 5,
             column = 1,
             sticky = "ns",
             pady = 10,
@@ -209,7 +242,7 @@ class AddIngredient(tk.Frame):
             command = lambda: controller.show_frame(ss.StockPage)
         )
         self.buttonReturn.grid(
-            row = 4,
+            row = 5,
             column = 0,
             sticky = "ns",
             pady = 10,
@@ -222,21 +255,16 @@ class AddIngredient(tk.Frame):
         self,
         name,
         allergen,
-        type_choice
+        type_choice,
+        rid
     ):
-        connection = sql.connect("ga.db") 
-        cursor = connection.cursor()
-        addName = """INSERT INTO INGREDIENT (ing_name) VALUES (?)"""
-        addAller = """INSERT INTO INGREDIENT (allergy) VALUES (?)"""
-        addType = """INSERT INTO INGREDIENT (type) VALUES (?)"""
-        if not (len(name)) == 0:
-            if name.isalpha() == True:
-                cursor.execute(addName, name)
-            else:
-                pass 
-        else:
-            pass 
-        cursor.execute(addAller, allergen)
-        cursor.execute(addType, type_choice)
-        connection.commit()
-        cursor.close()
+        connection = sql.connect("ga.db") #Connect to DB
+        cursor = connection.cursor() #init cursor
+        Data = (name, allergen, type_choice, rid)
+        #Insert new record with inputted data into Ingredient table
+        addData = """INSERT INTO INGREDIENT (ing_name, allergy, type, rec_id) VALUES (?, ?, ?, ?)"""
+        if not (len(name)) == 0: #Ingredient name presence check - different method, same result
+            if name.isalpha() == True: #Ingredient name type check
+                cursor.execute(addData, Data) #Execute insert
+        connection.commit() #Close connection
+        cursor.close() #Close cursor

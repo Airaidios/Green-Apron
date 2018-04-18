@@ -212,22 +212,24 @@ class ViewIngredients(tk.Frame):
         self,
         tree 
     ):
-        tree.delete(*tree.get_children())
-        connection = sql.connect("ga.db")
-        cursor = connection.cursor()
-        insert = """SELECT * FROM INGREDIENT"""
-        cursor.execute(insert)
-        i = 0
-        for row in cursor:
-            tree.insert(
+        tree.delete(*tree.get_children()) #clear contents of treeview
+        connection = sql.connect("ga.db") #connect to db
+        cursor = connection.cursor() #init cursor
+        insert = """SELECT * FROM INGREDIENT""" #select everything from the ingredient table
+        cursor.execute(insert) #execute select
+        i = 0 #init counter
+        for row in cursor: #iterate through contents of cursor
+            tree.insert( #insert currently selected row into treeview
                 "",
                 "end",
                 text = str(i),
                 values = (row[1], row[2], row[3], row[4])
             )
-            i += 1  
-        connection.close()
+            i += 1 #increase counter
+        connection.close() #close connection
+        cursor.close() #close cursor
 
+    #search the Ingredient table for the search term entered
     def searchIngredient(
         self,
         term,
@@ -236,8 +238,9 @@ class ViewIngredients(tk.Frame):
         table.delete(*table.get_children())
         connection = sql.connect("ga.db")
         cursor = connection.cursor()
+        #select everything from the Ingredient table that contains the search term
         search = """SELECT * FROM KIT WHERE (?) IN (ing_id, ing_name, ing_quant, allergy, type)"""
-        cursor.execute(search, (term,))
+        cursor.execute(search, (term,)) #execute search
         i = 0
         for row in cursor.fetchall():
             table.insert(
@@ -248,3 +251,4 @@ class ViewIngredients(tk.Frame):
             )
             i += 1
         connection.close()
+        cursor.close()

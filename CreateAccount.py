@@ -20,10 +20,12 @@ class CreateAccount(tk.Frame):
             parent
         )
 
-        #Styling
+        #Styling - set background colour
         self.configure(bg = "gray20")
 
-        #Dictionary for dietary requirements
+        #Dictionary for dietary requirements, the items within this dictionary
+        #will be used to populate a dropdown menu. This restriction of options
+        #means that less validation will be needed
         self.diet = tk.StringVar(controller)
         self.reqs = {
             "None",
@@ -39,19 +41,21 @@ class CreateAccount(tk.Frame):
             "Kosher",
             "Halal"
         }
+        #Set the default option of the dropdown to "None"
         self.diet.set("None")
 
-        #dictionary for package level
+        #Dictionary for options for package level.
         self.package = tk.StringVar(controller)
         self.packs = {
             "1",
             "2"
         }
+        #Set default value
         self.package.set("1")
 
-        #Labels
+        #LABELS#
 
-        #Title label
+        #Menu title label
         self.labelTitle = tk.Label(
             self,
             text = "EDIT ACCOUNT",
@@ -68,7 +72,7 @@ class CreateAccount(tk.Frame):
             padx = 10
         )
 
-        #First name 
+        #Label to identify username entry
         self.labelUsername = tk.Label(
             self,
             text = "USERNAME",
@@ -84,7 +88,7 @@ class CreateAccount(tk.Frame):
             padx = 10
         )
 
-        #Address
+        #Label to identify address entry
         self.labelAddress = tk.Label(
             self,
             text = "ADDRESS",
@@ -100,7 +104,7 @@ class CreateAccount(tk.Frame):
             padx = 10
         )
 
-        #Package
+        #Label to identify the package dropdown
         self.labelPackage = tk.Label(
             self,
             text = "PACKAGE",
@@ -116,7 +120,7 @@ class CreateAccount(tk.Frame):
             padx = 10
         )
 
-        #Diet requirements
+        #Label to identify the dietary requirements dropdown
         self.labelDiet = tk.Label(
             self,
             text = "DIET REQUIREMENTS",
@@ -132,7 +136,7 @@ class CreateAccount(tk.Frame):
             padx = 10
         )
 
-        #Email
+        #Label to identify the email address entry
         self.labelMail = tk.Label(
             self,
             text = "EMAIL",
@@ -148,7 +152,7 @@ class CreateAccount(tk.Frame):
             padx = 10
         )
 
-        #Password
+        #Label to identify the first password entry
         self.labelPass = tk.Label(
             self,
             text = "PASSWORD",
@@ -164,6 +168,7 @@ class CreateAccount(tk.Frame):
             padx = 10
         )
 
+        #Label to identify the second password entry
         self.labelConfirm = tk.Label(
             self,
             text = "CONFIRM PASSWORD",
@@ -179,9 +184,9 @@ class CreateAccount(tk.Frame):
             padx = 10
         )
 
-        #Entries
+        #ENTRIES#
 
-        #username 
+        #Entry for username
         self.entryUsername = tk.Entry(
             self,
             bg = "gray30",
@@ -197,7 +202,7 @@ class CreateAccount(tk.Frame):
             padx = 10
         )
 
-        #Address
+        #Entry for address
         self.entryAddress = tk.Entry(
             self,
             fg = "white",
@@ -213,7 +218,7 @@ class CreateAccount(tk.Frame):
             padx = 10
         )
 
-        #Email
+        #Entry for email address
         self.entryMail = tk.Entry(
             self,
             fg = "white",
@@ -229,6 +234,7 @@ class CreateAccount(tk.Frame):
             padx = 10
         )
 
+        #Initial entry for password
         self.entryPass = tk.Entry(
             self,
             fg = "white",
@@ -245,6 +251,9 @@ class CreateAccount(tk.Frame):
             padx = 10
         )
 
+        #Second entry for password - this is here to ensure
+        #user enters the password they really want, and reduces the risk
+        #of mistakes within the password
         self.entryConfirm = tk.Entry(
             self,
             fg = "white",
@@ -261,9 +270,9 @@ class CreateAccount(tk.Frame):
             padx = 10
         )
 
-        #dropdowns
+        #DROPDOWNS#
 
-        #Package
+        #Package dropdown
         self.popPack = tk.OptionMenu(
             self,
             self.package,
@@ -277,7 +286,7 @@ class CreateAccount(tk.Frame):
             padx = 10
         )
 
-        #Diet requirements
+        #Dietary requirements dropdown
         self.popDiet = tk.OptionMenu(
             self,
             self.diet,
@@ -291,9 +300,9 @@ class CreateAccount(tk.Frame):
             padx = 10
         )
 
-        #Buttons
+        #BUTTONS#
 
-        #Return button
+        #Button to return to previous menu
         self.buttonReturn = tk.Button(
             self,
             text = "RETURN",
@@ -313,7 +322,8 @@ class CreateAccount(tk.Frame):
             padx = 10
         )
 
-        #Save button
+        #Button to confirm account details and create an account by
+        #calling the createAccount method
         self.buttonSave = tk.Button(
             self,
             text = "SAVE",
@@ -342,6 +352,8 @@ class CreateAccount(tk.Frame):
             pady = 10
         )
 
+    #Method for taking entered details and collating them into one
+    #record and insert that record into the Client table
     def createAccount(
         self,
         username,
@@ -365,39 +377,29 @@ class CreateAccount(tk.Frame):
         passwordhash = self.encryptPass(password)
         #Data to be inserted
         newData = (username, address, package, diet, email, passwordhash)
-        #Username validation
-        if not username == None and username.isalpha() == True:
-            #Address validation
-            if not address == None and address[0:2].isdecimal() == True and address[4:].isalpha() == True:
-                #Package validation
-                if not package == None:
-                    #Diet requirements validation
-                    if not diet == None:
+        if not username == None and username.isalpha() == True: #Username validation
+            if not address == None and address[0:2].isdecimal() == True and address[4:].isalpha() == True: #Address validation
+                if not package == None: #Package validation
+                    if not diet == None: #Diet requirements validation
                         #Email address validation - I use a simple check here as the only way to ensure the address
                         #is correct is to send a confirmation email to the entered address
                         if not email == None and email.find("@") != -1 and email.find(".") != -1:
-                            #Ensure entered password is wanted password
-                            if password == password_confirm:
-                                #Create populated record
-                                cursor.execute(addData, newData)
-                                #Find the ID of that record
-                                cursor.execute(fetchLatestRecord)
-                                #Assign result of above execution to a variable
-                                latestRecord = cursor.fetchone()[0]
-                                #Define tuple to be inserted, this includes the client access level (0) and the most recent record ID (latestRecord)
-                                levelData = (0, latestRecord)
-                                #Insert level into newest record
-                                cursor.execute(insertLevel, levelData)
-                                #Bring user back to login menu
-                                controller.show_frame(l.Login)
-        connection.commit()
-        cursor.close()
+                            if password == password_confirm: #Ensure entered password is wanted password
+                                cursor.execute(addData, newData) #Create populated record
+                                cursor.execute(fetchLatestRecord) #Find the ID of that record
+                                latestRecord = cursor.fetchone()[0] #Assign result of above execution to a variable
+                                levelData = (0, latestRecord) #Define tuple to be inserted, this includes the client access level (0) and the most recent record ID (latestRecord)
+                                cursor.execute(insertLevel, levelData) #Insert level into newest record
+                                controller.show_frame(l.Login) #Bring user back to login menu
+        connection.commit() #Save changes to database
+        cursor.close() #Close connection
 
-    #Pad and encrypt password
+    #Method for encrypting password
     def encryptPass(
         self,
         password
     ):
 
+        #Use hashlibs built in sha256 method to encrypt the password(which has to be formatted to utf-8)
         hashed = hsh.sha256(password.encode("utf-8")).hexdigest()
         return hashed

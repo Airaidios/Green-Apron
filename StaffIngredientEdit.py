@@ -284,31 +284,30 @@ class EditIngredient(tk.Frame):
         type_choice,
         iid
     ):
+        #Create tuples that will be used with the SQL statement, containing
+        #the new data as well as the ingredient ID
         Name = (name, iid) 
         Quant = (quant, iid)
         Aller = (allergen, iid)
         Type = (type_choice, iid)
-        connection = sql.connect("ga.db")
-        cursor = connection.cursor()
+        connection = sql.connect("ga.db") #connect to db
+        cursor = connection.cursor() #init cursor
+        #Update ing_name record in Ingredient table with new data
         addName = """UPDATE INGREDIENT SET (ing_name) = (?) WHERE ing_id = ?"""
+        #Update quantity record in Ingredient table with new data
         addQuant = """UPDATE INGREDIENT SET (ing_quant) = (?) WHERE ing_id = ?"""
+        #Update allergy record in Ingredient table with new data
         addAller = """UPDATE INGREDIENT SET (allergy) = (?) WHERE ing_id = ?"""
+        #Update type record in Ingredient table with new data
         addType = """UPDATE INGREDIENT SET (type) = (?) WHERE ing_id = ?"""
-        if not (len(name)) == 0:
-            if name.isalpha() == True:
-                cursor.execute(addName, Name)
-            else:
-                pass 
-        else:
-            pass 
-        if not (len(name)) == 0:
-            if quant.isdecimal() == True:
-                cursor.execute(addQuant, Quant)
-            else:
-                 pass 
-        else:
-                pass 
-        cursor.execute(addAller, Aller)
-        cursor.execute(addType, Type)
-        connection.commit()
-        cursor.close()
+        if not (len(name)) == 0: #Ingredient name presence check
+            if name.isalpha() == True: #Ingredient name type check
+                cursor.execute(addName, Name) #execute update
+        if not (len(quant)) == 0: #quantity presence check
+            if quant.isdecimal() == True: #quantity type check
+                cursor.execute(addQuant, Quant) #execute update
+        cursor.execute(addAller, Aller) #execute update
+        cursor.execute(addType, Type) #execute update
+        connection.commit() #save changes
+        cursor.close() #close cursor
+        connection.close() #close connection

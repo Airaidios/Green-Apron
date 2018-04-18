@@ -22,9 +22,9 @@ class ClientOrderEdit(tk.Frame):
         #styling
         self.configure(bg = "gray20")
 
-        #Labels
+        #LABELS#
 
-        #Title label
+        #Menu title label
         self.labelTitle = tk.Label(
             self,
             text = "EDIT ORDER",
@@ -41,7 +41,7 @@ class ClientOrderEdit(tk.Frame):
             padx = 10
         )
 
-        #Order label
+        #Order ID entry label
         self.labelOrder = tk.Label(
             self,
             text = "ORDER ID",
@@ -57,7 +57,7 @@ class ClientOrderEdit(tk.Frame):
             padx = 10
         )
 
-        #Kit label
+        #Kit ID entry label
         self.labelKit = tk.Label(
             self,
             text = "KIT ID",
@@ -73,7 +73,7 @@ class ClientOrderEdit(tk.Frame):
             padx = 10
         )
 
-        #Entries
+        #ENTRIES#
 
         #Order ID entry
         self.entryOrder = tk.Entry(
@@ -108,7 +108,7 @@ class ClientOrderEdit(tk.Frame):
         )
 
 
-        #Buttons
+        #BUTTONS#
 
         #Return button
         self.buttonReturn = tk.Button(
@@ -142,7 +142,8 @@ class ClientOrderEdit(tk.Frame):
             width = 25,
             command = lambda: self.updateOrder(
                 self.entryKit.get(),
-                self.entryOrder.get()
+                self.entryOrder.get(),
+                controller.accountID
             )
         )
         self.buttonSave.grid(
@@ -153,22 +154,21 @@ class ClientOrderEdit(tk.Frame):
             padx = 10
         )
 
-    #Update order
+    #Method for updating order
     def updateOrder(
         self,
         kid,
-        oid
+        oid,
+        aid
     ):
-        Kit = (kid, oid)
-        connection = sql.connect("ga.db")
-        cursor = connection.cursor()
-        update = """UPDATE "ORDER" SET (kit_id) = (?) WHERE (order_id) = ?"""
-        if not kid == None:
-            if kid.isdecimal() == True:
-                cursor.execute(update, Kit)
-            else:
-                pass 
-        else:
-            pass 
-        connection.commit()
-        cursor.close()
+        Kit = (kid, oid, aid) #Create a tuple that contains the new data, order_id, and account ID
+        connection = sql.connect("ga.db") #Connect to DB
+        cursor = connection.cursor() #Init cursor
+        #SQL Statement that updates the record in the DB with the entered ID with the new data, but only
+        #if the record belongs to the user
+        update = """UPDATE "ORDER" SET (kit_id) = (?) WHERE (order_id) = ? AND (client_id) = ?"""
+        if not kid == None: #Kit ID presence check
+            if kid.isdecimal() == True: #Kit ID type check
+                cursor.execute(update, Kit) #Execute update
+        connection.commit() #Save changes to DB
+        cursor.close() #Close connection

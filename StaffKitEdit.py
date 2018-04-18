@@ -244,23 +244,14 @@ class StaffKitEdit(tk.Frame):
         addName = """UPDATE KIT SET (kit_name) = (?) WHERE kit_id = ?"""
         addPrice = """UPDATE KIT SET (price) = (?) WHERE kit_id = ?"""
         addSize = """UPDATE KIT SET (size) = (?) WHERE kit_id = ?"""
-        #update Name
         if not (len(name)) == 0: #Presence check
             if name.isalpha() == True: #Type check
-                cursor.execute(addName, Name)
-            else:
-                pass 
-        else:
-            pass
-        #Update price
-        if not (len(price)) == 0:
-            if price.isdecimal() == True:
-                cursor.execute(addPrice, Price)
-            else:
-                pass 
-        else:
-            pass
+                cursor.execute(addName, Name) #execute edit
+        if not (len(price)) == 0: #price presence check
+            if price.isdecimal() == True: #price type check
+                cursor.execute(addPrice, Price) #execute edit
         #I don't need to validate this as it can only be taken from a set list of options
         cursor.execute(addSize, Size)
-        connection.commit()
-        cursor.close()
+        connection.commit() #save changes
+        cursor.close() #close cursor
+        connection.close() #close connection

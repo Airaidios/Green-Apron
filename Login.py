@@ -14,7 +14,7 @@ class Login(tk.Frame):
         self,
         parent,
         controller
-        ):
+    ):
 
         #Initialise frame
         tk.Frame.__init__(
@@ -22,24 +22,21 @@ class Login(tk.Frame):
             parent
         )
 
-        #Styling
+        #Styling - set window background
         self.configure(background = "gray20")
-
-        #Initialise infoString for use in infoLabel
-        self.infoString = ""
 
         #Images
 
-        #Logo
+        #Logo, scaled down to fit within window.
         self.logoLarge = tk.PhotoImage(file = controller.logo)
         self.logoScaled = self.logoLarge.subsample(
             3,
             3
         )
 
-        #Labels
+        #LABELS#
 
-        #Logo
+        #Label that contains logo
         self.logoLabel = tk.Label(
             self,
             bg = "gray20",
@@ -54,7 +51,7 @@ class Login(tk.Frame):
             padx = 10
         )
 
-        #Title label
+        #Menu title label
         self.label = tk.Label(
             self,
             text = "LOGIN",
@@ -70,7 +67,7 @@ class Login(tk.Frame):
             padx = 10
         )
 
-        #Username label
+        #Label to identify entry for usernames
         self.labelName = tk.Label(
             self,
             text = "USERNAME",
@@ -86,7 +83,7 @@ class Login(tk.Frame):
             padx = 10
         )
 
-        #Password label
+        #Label to identify entry for passwords
         self.labelPass = tk.Label(
             self,
             text = "PASSWORD",
@@ -102,26 +99,9 @@ class Login(tk.Frame):
             padx = 10
         )
 
-        #Label for info like "incorrect password", etc.
-        self.labelInfo = tk.Label(
-            self,
-            text = self.infoString,
-            font = controller.SMALL_FONT,
-            fg = "#FF0059",
-            bg = "gray20"
-        )
-        self.labelInfo.grid(
-            row = 5,
-            column = 1,
-            columnspan = 2,
-            sticky = "ns",
-            pady = 10,
-            padx = 10
-        )
+        #ENTRIES#
 
-        #Entries
-
-        #Username entry
+        #Entry for username
         self.entryName = tk.Entry(
             self,
             bd = 2,
@@ -136,7 +116,7 @@ class Login(tk.Frame):
             padx = 10
         )
 
-        #Password entry
+        #Entry for passwords
         self.entryPass = tk.Entry(
             self,
             bd = 2,
@@ -152,7 +132,7 @@ class Login(tk.Frame):
             padx = 10
         )
 
-        #Buttons
+        #BUTTONS#
 
         #Login button
         self.buttonLogin = tk.Button(
@@ -199,6 +179,7 @@ class Login(tk.Frame):
             padx = 10
         )
 
+        #Button for creating an account
         self.buttonCreate = tk.Button(
             self,
             text = "CREATE ACCOUNT",
@@ -218,6 +199,7 @@ class Login(tk.Frame):
             padx = 10
         )
 
+    #Method for validating password.
     def checkPass(
         self,
         password,
@@ -225,18 +207,20 @@ class Login(tk.Frame):
         controller,
         ca
     ):
-        connection = sql.connect("ga.db")
-        cursor = connection.cursor()
+        connection = sql.connect("ga.db") #Establish connection to central database
+        cursor = connection.cursor() #Initialise a cursor
+        #Execute a non-predefined SQL statement for finding the password associated with
+        #entered username - This password is encrypted using 256bit encryption to prevent
+        #unauthorised access.
         cursor.execute("""SELECT password FROM CLIENT WHERE username = ?""", (username,))
-        passwordfetched = cursor.fetchone()[0]
-        passwordhash = hsh.sha256(password.encode("utf-8")).hexdigest()
-        if passwordhash == passwordfetched:
+        passwordfetched = cursor.fetchone()[0] #Assign found password to a variable
+        passwordhash = hsh.sha256(password.encode("utf-8")).hexdigest() #Encrypt entered password using 256bit encryption
+        if passwordhash == passwordfetched: #Compare the encrypted passwords
+            #If both encrypted passwords are the same, run the login method from Main
             controller.login(
                 self.entryName.get(),
                 self.entryPass.get(),
                 controller,
                 controller.accountID
             )
-        else:
-            pass 
-        connection.close()
+        connection.close() #Close database connection

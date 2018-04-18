@@ -195,6 +195,7 @@ class ViewKit(tk.Frame):
         )
         self.tree.configure(yscrollcommand = self.scroll.set)
 
+    #Update contents of treeview with new or changed records
     def updateTable(
                     self,
                     table
@@ -217,7 +218,9 @@ class ViewKit(tk.Frame):
                             )
             i += 1
         connection.close()
+        cursor.close()
 
+    #Search all columns in Kit table for the search term
     def searchKit(
         self,
         term,
@@ -238,3 +241,4 @@ class ViewKit(tk.Frame):
             )
             i += 1
         connection.close()
+        cursor.close()

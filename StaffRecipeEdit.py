@@ -286,6 +286,7 @@ class StaffRecipeEdit(tk.Frame):
             padx = 10
         )
 
+    #update record in Recipe table with matching recipe ID
     def updateItem(
         self,
         name,
@@ -294,27 +295,28 @@ class StaffRecipeEdit(tk.Frame):
         prep,
         rid
     ):
+        #Create tuples to be used with the sql statements
         Name = (name, rid)
         Cult = (culture, rid) 
         Serve = (servings, rid)
         Prep = (prep, rid)
-        connection = sql.connect("ga.db")
-        cursor = connection.cursor()
+        connection = sql.connect("ga.db") #connect to db
+        cursor = connection.cursor() #init cursor
+        #Update matching record with new data
         addName = """UPDATE RECIPE SET (rec_name) = (?) WHERE (rec_id) = ?"""
         addCult = """UPDATE RECIPE SET (culture) = (?) WHERE (rec_id) = ?"""
         addServe = """UPDATE RECIPE SET (servings) = (?) WHERE (rec_id) = ?"""
         addPrep = """UPDATE RECIPE SET (prep_time) = (?) WHERE (rec_id) = ?"""
-        if not name == None:
-            if name.isalpha() == True:
-                cursor.execute(addName, Name)
-        if not culture == None:
-            if culture.isalpha() == True:
-                cursor.execute(addCult, Cult)
-        if not servings == None:
-            if servings.isdecimal() == True:
-                cursor.execute(addServe, Serve)
-        if not prep == None:
-            if prep.isdecimal() == True:
-                cursor.execute(addPrep, Prep)
-        connection.commit()
-        cursor.close()
+        if not name == None: #name presence check
+            if name.isalpha() == True: #name type check
+                cursor.execute(addName, Name) #execute update
+        cursor.execute(addCult, Cult) #execute update
+        if not servings == None: #servings presence check
+            if servings.isdecimal() == True: #servings type check
+                cursor.execute(addServe, Serve) #execute update
+        if not prep == None: #prep time presence check
+            if prep.isdecimal() == True: #prep time type check
+                cursor.execute(addPrep, Prep) #execute insert
+        connection.commit() #save changes
+        cursor.close() #close cursor
+        connection.close() #close connection

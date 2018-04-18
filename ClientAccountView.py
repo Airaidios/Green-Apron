@@ -22,7 +22,7 @@ class ClientAccountView(tk.Frame):
         #Styling
         self.configure(bg = "gray20")
 
-        #Labels
+        #LABELS#
 
         #Title label
         self.labelTitle = tk.Label(
@@ -120,7 +120,9 @@ class ClientAccountView(tk.Frame):
             padx = 10
         )
 
-        #Display Labels
+        #DISPLAY LABELS#
+        #These are not intialised with text, instead, the text is added later when the user clicks the "Refresh" button
+        #I used labels to display the account details because a client user will only be viewing the details of one account, theirs
 
         #username display
         self.displayusername = tk.Label(
@@ -197,7 +199,7 @@ class ClientAccountView(tk.Frame):
             padx = 10
         )
 
-        #Buttons
+        #BUTTONS#
 
         #Return button
         self.buttonReturn = tk.Button(
@@ -245,7 +247,8 @@ class ClientAccountView(tk.Frame):
             pady = 10,
             padx = 10
         )
-        
+
+    #Refresh account details and update the contents of the stringVars (the text of the display labels)     
     def updateDetails(
         self,
         usernamedisplay,
@@ -255,27 +258,32 @@ class ClientAccountView(tk.Frame):
         maildisplay,
         aid
     ):
-        connection = sql.connect("ga.db")
-        cursor = connection.cursor()
+        connection = sql.connect("ga.db") #Connect to DB
+        cursor = connection.cursor() #Init cursor
+        #Fetch username from account record belonging to user
         fetchUsername = """SELECT username FROM CLIENT WHERE client_id = ?"""
+        #Fetch address from account record belonging to user
         fetchAddress = """SELECT address FROM CLIENT WHERE client_id = ?"""
+        #Fetch package from account record belonging to user
         fetchPackage = """SELECT package FROM CLIENT WHERE client_id = ?"""
+        #Fetch dietary_requirements from account record belonging to user
         fetchDiet = """SELECT diet_req FROM CLIENT WHERE client_id = ?"""
+        #Fetch email address from account record belonging to user
         fetchMail = """SELECT email FROM CLIENT WHERE client_id = ?"""
-        print(aid)
-        cursor.execute(fetchUsername, (aid,))
-        Username = str(cursor.fetchone()[0])
-        cursor.execute(fetchAddress, (aid,))
-        Address = str(cursor.fetchone()[0])
-        cursor.execute(fetchPackage, (aid,))
-        Package = str(cursor.fetchone()[0])
-        cursor.execute(fetchDiet, (aid,))
-        Diet = str(cursor.fetchone()[0])
-        cursor.execute(fetchMail, (aid,))
-        Mail = str(cursor.fetchone()[0])
-        usernamedisplay.configure(text = Username)
+        cursor.execute(fetchUsername, (aid,)) #Execute fetch
+        Username = str(cursor.fetchone()[0]) #Update stringVar
+        cursor.execute(fetchAddress, (aid,)) #Execute fetch
+        Address = str(cursor.fetchone()[0]) #Update stringVar
+        cursor.execute(fetchPackage, (aid,)) #Execute fetch
+        Package = str(cursor.fetchone()[0]) #Update stringVar
+        cursor.execute(fetchDiet, (aid,)) #Execute fetch
+        Diet = str(cursor.fetchone()[0]) #Update stringVar
+        cursor.execute(fetchMail, (aid,)) #Execute fetch
+        Mail = str(cursor.fetchone()[0]) #Update stringVar
+        usernamedisplay.configure(text = Username) #Update display labels with new data
         addressdisplay.configure(text = Address)
         packagedisplay.configure(text = Package)
         dietdisplay.configure(text = Diet)
         maildisplay.configure(text = Mail)
-        connection.close()
+        connection.close() #Close connection
+        cursor.close() #Close cursor

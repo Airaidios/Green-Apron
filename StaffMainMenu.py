@@ -171,6 +171,7 @@ class MainMenuStaff(tk.Frame):
             padx = 10
         )
 
+        #Logout button
         self.buttonLogout = tk.Button(
             self,
             text = "LOGOUT",

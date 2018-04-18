@@ -20,12 +20,12 @@ class ClientOrderView(tk.Frame):
             parent
         )
 
-        #styling
+        #Styling - set background colour
         self.configure(bg = "gray20")
 
-        #labels
+        #LABELS#
 
-        #Title label
+        #Menu title label
         self.labelTitle = tk.Label(
             self,
             text = "YOUR ORDERS",
@@ -42,8 +42,9 @@ class ClientOrderView(tk.Frame):
             padx = 10
         )
 
-        #Treeview
+        #TREEVIEWS#
 
+        #Treeview to display orders owned by the user
         self.tree = tk.ttk.Treeview(
             self,
             style = "Custom.Treeview",
@@ -52,14 +53,18 @@ class ClientOrderView(tk.Frame):
                 "Kit ID"
             )
         )
+        #Initialise headings
+        #First heading contains order_id
         self.tree.heading(
             "#0",
             text = "Order ID"
         )
+        #Second heading contains account_id
         self.tree.heading(
             "#1",
             text = "Account ID"
         )
+        #Third heading contains kit_id
         self.tree.heading(
             "#2",
             text = "Kit ID"
@@ -85,11 +90,12 @@ class ClientOrderView(tk.Frame):
             pady = 10,
             padx = 10
         )
-        self.tree.configure(yscrollcommand = self.scroll.set)
+        self.tree.configure(yscrollcommand = self.scroll.set) #Set the movement of the scrollbar
+        #to manipulate the vertical scrolling of the treeview
 
-        #Entries
+        #ENTRIES#
 
-        #Search bar
+        #Search bar entry
         self.entrySearch = tk.Entry(
             self,
             fg = "white",
@@ -105,7 +111,7 @@ class ClientOrderView(tk.Frame):
             padx = 10
         )
 
-        #Buttons
+        #BUTTONS#
 
         #Search button
         self.buttonSearch = tk.Button(
@@ -174,47 +180,52 @@ class ClientOrderView(tk.Frame):
             padx = 10
         )
 
-    #refresh table
+    #Refresh contents of table - allows live updates to the database readout
     def populateTable(
         self,
         table,
         aid
     ):
-        table.delete(*table.get_children())
-        connection = sql.connect("ga.db")
-        cursor = connection.cursor()
+        table.delete(*table.get_children()) #Deletes previous contents of treeview to
+        #prevent duplicate records, but this also means the table is empty when first
+        #viewing after starting program.
+        connection = sql.connect("ga.db") #Connect to DB
+        cursor = connection.cursor() #Init cursor
+        #SQL statement to fetch records in the Order table belonging to the user
         insert = """SELECT * FROM ("ORDER") WHERE (client_id) = ?"""
-        cursor.execute(insert, (aid,))
-        i = 0
-        for row in cursor:
-            table.insert(
+        cursor.execute(insert, (aid,)) #Execute fetch
+        i = 0 #Init iterator
+        for row in cursor: #Begin iteration through contents of cursor
+            table.insert( #Insert currently selected row into table 
                 "",
                 "end",
                 text = str(i),
                 values = (row[1], row[2])
             )
-            i += 1
-        connection.close()
+            i += 1 #Increase counter
+        connection.close() #Close connection
 
+    #Take search term and return all rows in the table containing the search term
     def searchOrder(
         self,
         term,
         table,
         aid
     ):
-        table.delete(*table.get_children())
-        connection = sql.connect("ga.db")
-        cursor = connection.cursor()
+        table.delete(*table.get_children()) #Clear contents of treeview to make room for search results
+        connection = sql.connect("ga.db") #Connect to DB
+        cursor = connection.cursor() #Init cursor
+        #SQL statement that runs through every attribute in every record owned by the user and searches it for the search term
         search = """SELECT * FROM "ORDER" WHERE ((?) IN (order_id, kit_id)) AND (client_id) = ?"""
-        Term = (int(term), aid)
-        cursor.execute(search, Term)
-        i = 0
-        for row in cursor.fetchall():
-            table.insert(
+        Term = (int(term), aid) #Create tuple that contains the search term and account ID
+        cursor.execute(search, Term) #Execute search
+        i = 0 #init counter
+        for row in cursor.fetchall(): #Iterate through the cursor
+            table.insert( #Insert into the treeview the currently selected row in the cursor
                 "",
                 "end",
                 text = str(i),
                 values = (row[1], row[2])
             )
-            i += 1
-        connection.close()
+            i += 1 #increase counter
+        connection.close() #Close connection

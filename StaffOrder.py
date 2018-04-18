@@ -149,14 +149,12 @@ class OrderPageStaff(tk.Frame):
         if oid.isdecimal() == True:
             if cursor.fetchone():
                 #Statement for deleting the relevant record
-                delete = """DELETE FROM ("ORDER") WHERE order_id = ?"""
+                delete = """DELETE FROM "ORDER" WHERE order_id = ?"""
                 cursor.execute(
                     delete,
                     oid
                 )
                 #"Save changes"
                 connection.commit()
-            else:
-                pass
-        else:
-            pass
+        cursor.close()
+        connection.close()

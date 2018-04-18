@@ -107,6 +107,7 @@ class StockPage(tk.Frame):
             padx = 10
         )
         
+        #View ingredients
         self.buttonView = tk.Button(
             self,
             text = "VIEW INGREDIENTS",
@@ -127,6 +128,7 @@ class StockPage(tk.Frame):
             padx = 10
         )
 
+        #Delete button
         self.buttonDelete = tk.Button(
             self,
             text = "DELETE INGREDIENT",
@@ -167,6 +169,7 @@ class StockPage(tk.Frame):
             padx = 10
         )
 
+    #Delete ingredient
     def deleteIng(
         self,
         iid,
@@ -190,7 +193,5 @@ class StockPage(tk.Frame):
                 )
                 #"Save changes"
                 connection.commit()
-            else:
-                pass
-        else:
-            pass
+        connection.close()
+        cursor.close()

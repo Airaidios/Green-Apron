@@ -22,12 +22,12 @@ class ClientOrderMenu(tk.Frame):
             parent
         )
 
-        #Styling 
+        #Styling - set background colour
         self.configure(background = "gray20")
 
-        #Labels 
+        #LABELS#
 
-        #Menu Title Label 
+        #Menu title label 
         self.labelTitle = tk.Label(
             self,
             text = "ORDER MANAGEMENT",
@@ -45,9 +45,9 @@ class ClientOrderMenu(tk.Frame):
             padx = 10
         )
 
-        #Buttons 
+        #BUTTONS#
 
-        #Place order button
+        #Button that brings user to Add Order menu
         self.buttonAdd = tk.Button(
             self,
             text = "PLACE ORDER",
@@ -68,7 +68,7 @@ class ClientOrderMenu(tk.Frame):
             padx = 10
         )
 
-        #Edit order button 
+        #Button to bring user Edit Order menu 
         self.buttonEdit = tk.Button(
             self,
             text = "EDIT ORDER",
@@ -89,7 +89,7 @@ class ClientOrderMenu(tk.Frame):
             padx = 10
         )
 
-        #View orders 
+        #Button to bring user to a table containing their placed orders
         self.buttonView = tk.Button(
             self,
             text = "VIEW ORDERS",
@@ -110,7 +110,9 @@ class ClientOrderMenu(tk.Frame):
             padx = 10
         )
 
-        #Delete button 
+        #Button to delete order with ID entered in adjacent entry - but only
+        #If the client_id of that order is equal to the contents of the 
+        #account ID token
         self.buttonDelete = tk.Button(
             self,
             text = "CANCEL ORDER",
@@ -121,7 +123,8 @@ class ClientOrderMenu(tk.Frame):
             activebackground = "#44d276",
             width = 25,
             command = lambda: self.deleteItem(
-                self.entryDelete.get()
+                self.entryDelete.get(),
+                controller.accountID
             )
         )
         self.buttonDelete.grid(
@@ -132,7 +135,7 @@ class ClientOrderMenu(tk.Frame):
             padx = 10
         )
 
-        #Return button 
+        #Return button
         self.buttonReturn = tk.Button(
             self,
             text = "RETURN",
@@ -153,7 +156,7 @@ class ClientOrderMenu(tk.Frame):
             padx = 10
         )
 
-        #Entries 
+        #ENTRIES#
 
         #Delete ID entry 
         self.entryDelete = tk.Entry(
@@ -171,26 +174,28 @@ class ClientOrderMenu(tk.Frame):
             padx = 10
         )
 
+    #Method for deleting a record in the Order table if the client_id in that record
+    #is equal to the contents of the accountID token
     def deleteItem(
         self,
-        oid
+        oid,
+        aid
     ):
-        connection = sql.connect("ga.db")
-        cursor = connection.cursor()
-        select = """SELECT order_id FROM ("ORDER") WHERE order_id = ?"""
-        cursor.execute(
+        connection = sql.connect("ga.db") #Establish connection to central database
+        cursor = connection.cursor() #Initialise a cursor
+        #SQL statement for fetching the entered record if it belongs to the user
+        select = """SELECT order_id FROM ("ORDER") WHERE order_id = ? AND client_id = ?"""
+        cursor.execute( #Execute SQL statement
             select,
-            (oid,)
+            (oid, aid)
         )
-        if oid.isdecimal() == True:
-            if cursor.fetchone():
-                delete = """DELETE FROM ("ORDER") WHERE order_id = ?"""
-                cursor.execute(
+        if oid.isdecimal() == True: #Order ID type check
+            if cursor.fetchone(): #Check if the cursor comes up empty (i.e. If the entered ID exists in the table)
+                #SQL statement for deleting relevant record
+                delete = """DELETE FROM ("ORDER") WHERE order_id = ? AND client_id"""
+                cursor.execute( #Execute deletion
                     delete,
-                    oid
+                    (oid, aid)
                 )
-                connection.commit()
-            else:
-                pass 
-        else:
-            pass
+        connection.commit() #Save changes to database
+        cursor.close() #Close connection

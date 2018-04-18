@@ -79,7 +79,7 @@ class ClientDeleteCon(tk.Frame):
             padx = 10
         )
 
-        #Confirm button
+        #Confirm button - This has different stylings to emphasize and draw attention to it
         self.buttonConfirm = tk.Button(
             self,
             text = "CONFIRM",
@@ -97,29 +97,30 @@ class ClientDeleteCon(tk.Frame):
             padx = 10
         )
 
+    #Delete record from Client Table with ID equal to the contents of accountID token
     def deleteAccount(
         self,
         aid,
         controller
     ):
-        connection = sql.connect("ga.db")
-        cursor = connection.cursor()
+        connection = sql.connect("ga.db") #connect to db
+        cursor = connection.cursor() #init cursor
+        #fetch record belonging to user
         select = """SELECT client_id FROM CLIENT WHERE client_id = ?"""
-        cursor.execute(
+        cursor.execute( #execute fetch
             select,
             (aid,)
         )
-        if cursor.fetchone():
-            delete = """DELETE FROM CLIENT WHERE client_id = ?"""
-            cursor.execute(
+        if cursor.fetchone(): #if the fetch was successful
+            delete = """DELETE FROM CLIENT WHERE client_id = ?""" #delete the record
+            cursor.execute( #execute delete
                 delete,
                 (aid,)
             )
-            connection.commit()
-        else:
-            pass
-        controller.show_frame(l.Login)
-        connection.comitt()
-        cursor.close()
+            connection.commit() #save changes
+        controller.show_frame(l.Login) #Bring user back to login frame
+        connection.commit() #Save changes
+        cursor.close() #close cursor
+        connection.close() #close connection
 
 

@@ -28,7 +28,7 @@ class ClientAccountEdit(tk.Frame):
         self.reqs = {
             "None",
             "Egg Allergy",
-            "Fish Allergy"
+            "Fish Allergy",
             "Peanut Allergy",
             "Shellfish Allergy",
             "Soy Allergy",
@@ -277,6 +277,7 @@ class ClientAccountEdit(tk.Frame):
             pady = 10
         )
 
+    #Update account details
     def updateAccount(
         self,
         username,
@@ -286,31 +287,36 @@ class ClientAccountEdit(tk.Frame):
         email,
         aid
     ):
+        #Create tuples that contain the new data and the accountID
         Username = (username, aid)
         Address = (address, aid)
         Package = (package, aid)
         Diet = (diet, aid)
         Email = (email, aid)
-        connection = sql.connect("ga.db")
-        cursor = connection.cursor()
+        connection = sql.connect("ga.db") #Connect to DB
+        cursor = connection.cursor() #Init cursor
+        #Update username in Client table where the client ID is equal to the contents of the Account ID token
         addusername = """UPDATE CLIENT SET (username) = (?) WHERE (client_id) = ?"""
+        #Update address in Client table where the client ID is equal to the contents of the Account ID token
         addAddress = """UPDATE CLIENT SET (address) = (?) WHERE (client_id) = ?"""
+        #Update package in Client table where the client ID is equal to the contents of the Account ID token
         addPackage = """UPDATE CLIENT SET (package) = (?) WHERE (client_id) = ?"""
+        #Update dietary requirements in Client table where the client ID is equal to the contents of the Account ID token
         addDiet = """UPDATE CLIENT SET (diet_req) = (?) WHERE (client_id) = ?"""
+        #Update email address in Client table where the client ID is equal to the contents of the Account ID token
         addEmail = """UPDATE CLIENT SET (email) = (?) WHERE (client_id) = ?"""
-        if not username == None:
-            if username.isalpha() == True:
-                cursor.execute(addusername, Username)
-        if not address == None:
-            if address[0:2].isdecimal() == True:
-                if address[4:].isalpha() == True:
-                    cursor.execute(addAddress, Address)
-        if not email == None:
-            print("Email presence check pass")
-            if email.isalpha() == True:
-                print("Email type check pass")
-                cursor.execute(addEmail, Email)
-        cursor.execute(addPackage, Package)
-        cursor.execute(addDiet, Diet)
-        connection.commit()
-        cursor.close()
+        if not username == None: #username presence check
+            if username.isalpha() == True: #username type check
+                cursor.execute(addusername, Username) #Execute update
+        if not address == None: #Address presence check
+            if address[0:2].isdecimal() == True: #Address type check
+                if address[4:].isalpha() == True: #Address format check
+                    cursor.execute(addAddress, Address) #Execute update
+        if not email == None: #Email presence check
+            if email.find(".") != -1: #Email format check
+                if email.find("@") != -1:
+                    cursor.execute(addEmail, Email) #Execute update
+        cursor.execute(addPackage, Package) #Execute package update
+        cursor.execute(addDiet, Diet) #Execute dietary requirements update
+        connection.commit() #close connection
+        cursor.close() #close cursor

@@ -19,12 +19,12 @@ class ClientOrderAdd(tk.Frame):
             parent
         )
 
-        #styling
+        #Styling - set background colour
         self.configure(bg = "gray20")
 
-        #Labels
+        #LABELS#
 
-        #Title label
+        #Menu title label
         self.labelTitle = tk.Label(
             self,
             text = "PLACE ORDER",
@@ -41,7 +41,7 @@ class ClientOrderAdd(tk.Frame):
             padx = 10
         )
 
-        #Kit label
+        #Label to identify the adjacent entry for Kit ID
         self.labelKit = tk.Label(
             self,
             text = "KIT ID",
@@ -57,7 +57,7 @@ class ClientOrderAdd(tk.Frame):
             padx = 10
         )
         
-        #Entries
+        #ENTRIES#
         
         #Kit ID entry
         self.entryKit = tk.Entry(
@@ -75,7 +75,7 @@ class ClientOrderAdd(tk.Frame):
             padx = 10
         )
 
-        #Buttons
+        #BUTTONS
 
         #Return button
         self.buttonReturn = tk.Button(
@@ -126,16 +126,16 @@ class ClientOrderAdd(tk.Frame):
         kid,
         aid
     ):
-        KitAccount = (kid, aid)
-        connection = sql.connect("ga.db")
-        cursor = connection.cursor()
+        KitAccount = (kid, aid) #Create a tuple that can be used with the SQL statement below
+        connection = sql.connect("ga.db") #Connect to DB
+        cursor = connection.cursor() #Init a cursor
+        #SQL statement to insert a record into the Order table that contains the kit_id entered
+        #and the client_id taken from the token
+        #ORDER is in quotations as ORDER is already a SQL function, this would cause syntax errors
+        #if the quotation marks were removed
         add = """INSERT INTO "ORDER" (kit_id, client_id) VALUES (?, ?)"""
-        if not kid == None:
-            if kid.isdecimal() == True:
-                cursor.execute(add, KitAccount)
-            else:
-                pass
-        else:
-            pass 
-        connection.commit()
-        cursor.close()
+        if not kid == None: #Kit ID presence check
+            if kid.isdecimal() == True: #Kit ID type check
+                cursor.execute(add, KitAccount) #Execute insert
+        connection.commit() #Save changes to DB
+        cursor.close() #Close cursor

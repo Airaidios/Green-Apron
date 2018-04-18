@@ -189,7 +189,3 @@ class StaffRecipeMenu(tk.Frame):
                     rid
                 )
                 connection.commit()
-            else:
-                pass 
-        else:
-            pass

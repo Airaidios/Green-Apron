@@ -168,20 +168,20 @@ class StaffKitsMenu(tk.Frame):
             padx = 10
         )
 
+    #Delete item from the Kit table
     def deleteItem(
         self,
         kid
     ):
-        connection = sql.connect("ga.db")
-        cursor = connection.cursor()
+        connection = sql.connect("ga.db") #connect to db
+        cursor = connection.cursor() #init cursor
+        #fetch record with the entered Kit ID
         select = """SELECT kit_id FROM KIT WHERE kit_id = ?"""
-        cursor.execute(select, (kid),)
-        if kid.isdecimal() == True:
-            if cursor.fetchone():
-                delete = """DELETE FROM KIT WHERE kit_id = ?"""
-                cursor.execute(delete, kid)
-                connection.commit()
-            else:
-                pass 
-        else:
-            pass
+        cursor.execute(select, (kid),) #execute fetch
+        if kid.isdecimal() == True: #kit id presence check
+            if cursor.fetchone(): #check if sql statement returned anything
+                delete = """DELETE FROM KIT WHERE kit_id = ?""" #delete record from kit table
+                cursor.execute(delete, kid) #execute delete
+                connection.commit() #save changes
+        connection.close() #close connection
+        cursor.close() #close cursor

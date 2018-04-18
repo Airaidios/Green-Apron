@@ -224,6 +224,7 @@ class StaffAccountView(tk.Frame):
         )
         self.tree.configure(yscrollcommand = self.scroll.set)
     
+    #Refresh treeview contents
     def populateInfo(
         self,
         table
@@ -243,7 +244,9 @@ class StaffAccountView(tk.Frame):
             )
             i += 1
         connection.close()
+        cursor.close()
 
+    #Search every column in the account table for the entered search term
     def searchAccount(
         self,
         term,
@@ -263,3 +266,4 @@ class StaffAccountView(tk.Frame):
                 values = (row[1], row[2], row[3], row[4], row[5], row[6])
             )
         connection.close()
+        cursor.close()

@@ -227,7 +227,9 @@ class StaffRecipeView(tk.Frame):
             )
             i += 1
         connection.close()
+        cursor.close()
 
+    #Search every column in the Recipe table for the entered search term
     def searchRecipe(
         self,
         term,
@@ -248,3 +250,4 @@ class StaffRecipeView(tk.Frame):
             )
             i += 1
         connection.close()
+        cursor.close()

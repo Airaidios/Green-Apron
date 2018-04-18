@@ -121,6 +121,22 @@ class AddRecipe(tk.Frame):
             padx = 10
         )
 
+        #Kit ID label
+        self.labelKitID = tk.Label(
+            self,
+            text = "KIT ID",
+            font = controller.SMALL_FONT,
+            fg = "white",
+            bg = "gray20"
+        )
+        self.labelKitID.grid(
+            row = 5,
+            column = 0,
+            sticky = "ns",
+            pady = 10,
+            padx = 10
+        )
+
         #Entries
 
         #Name Entry
@@ -168,6 +184,22 @@ class AddRecipe(tk.Frame):
             padx = 10
         )
 
+        #Kit ID entry
+        self.entryKitID = tk.Entry(
+            self,
+            fg = "white",
+            bg = "gray30",
+            bd = 2,
+            width = 25
+        )
+        self.entryKitID.grid(
+            row = 5,
+            column = 1,
+            sticky = "ns",
+            pady = 10,
+            padx = 10
+        )
+
         #Buttons
 
         #Save Button
@@ -184,11 +216,12 @@ class AddRecipe(tk.Frame):
                 self.nameEntry.get(),
                 self.culture.get(),
                 self.servingsEntry.get(),
-                self.prepEntry.get()
+                self.prepEntry.get(),
+                self.entryKitID.get()
             )
         )
         self.buttonSave.grid(
-            row = 5,
+            row = 6,
             column = 1,
             sticky = "ns",
             pady = 10,
@@ -208,7 +241,7 @@ class AddRecipe(tk.Frame):
             command = lambda: controller.show_frame(srm.StaffRecipeMenu)
         )
         self.buttonReturn.grid(
-            row = 5,
+            row = 6,
             column = 0,
             sticky = "ns",
             pady = 10,
@@ -237,31 +270,18 @@ class AddRecipe(tk.Frame):
         name,
         culture,
         servings,
-        prep
+        prep,
+        kid
     ):
-        connection = sql.connect("ga.db")
-        cursor = connection.cursor()
-        addRec = """INSERT INTO RECIPE (rec_name) VALUES (?)"""
-        addCult = """INSERT INTO RECIPE (culture) VALUES (?)"""
-        addServe = """INSERT INTO RECIPE (servings) VALUES (?)"""
-        addPrep = """INSERT INTO RECIPE (prep) VALUES (?)"""
-        if not (len(name)) == 0:
-            if name.isalpha() == True:
-                    cursor.execute(addRec, name)
-            else:
-                pass 
-        else:
-            pass 
-        cursor.execute(addCult, culture)
-        if not (len(servings)) == 0:
-            if servings.isdecimal() == True:
-                cursor.execute(addServe, servings)
-            else:
-                pass 
-        else:
-            pass 
-        if not (len(prep)) == 0:
-            if prep.isdecimal() == True:
-                cursor.execute(addPrep, prep)
-        connection.commit()
-        cursor.close()
+        connection = sql.connect("ga.db") #connect to db
+        cursor = connection.cursor() #init cursor
+        #SQL Statement for inserting data into table.
+        Data = (name, culture, servings, prep, kid)
+        addData = """INSERT INTO RECIPE (rec_name, culture, servings, prep_time, kit_id) VALUES (?, ?, ?, ?, ?)"""
+        if not (len(name)) == 0 and name.isalpha() == True: #name presence check and type check
+            if not (len(servings)) == 0 and servings.isdecimal == True: #servings presence and type check
+                if not (len(prep)) == 0 and prep.isdecimal == True: #prep time presence and type check
+                    cursor.execute(addData, Data) #execute insert
+                    connection.commit() #save changes
+        cursor.close() #close cursor
+        connection.close() #close connection

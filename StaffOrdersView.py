@@ -139,6 +139,7 @@ class ActiveOrder(tk.Frame):
                 "Kit"
             )
         )
+        #Init different columns, as well as setting their titles
         self.tree.heading(
             "#0",
             text = "Order ID"
@@ -156,6 +157,7 @@ class ActiveOrder(tk.Frame):
             columnspan = 4,
             sticky = "ns"
         )
+        #Adjust width of columns to reduce treeview size
         self.tree.column(
             "#0",
             minwidth = 50,
@@ -185,6 +187,7 @@ class ActiveOrder(tk.Frame):
             pady = 10,
             padx = 10
         )
+        self.tree.configure(yscrollcommand = self.scroll.set)
 
     #populate treeview with records from database
     def populateTable(
@@ -207,6 +210,7 @@ class ActiveOrder(tk.Frame):
             i += 1
         connection.close()
 
+    #Search through order table for term in any attribute
     def searchOrder(
         self,
         term,

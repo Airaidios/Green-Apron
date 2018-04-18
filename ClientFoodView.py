@@ -23,7 +23,7 @@ class ClientFoodView(tk.Frame):
         #Styling 
         self.configure(bg = "gray20")
 
-        #Labels 
+        #LABELS#
 
         #Title label 
         self.titleLabel = tk.Label(
@@ -42,7 +42,7 @@ class ClientFoodView(tk.Frame):
             padx = 10
         )
 
-        #Entries
+        #ENTRIES#
 
         #Search bar
         self.entrySearch = tk.Entry(
@@ -61,7 +61,7 @@ class ClientFoodView(tk.Frame):
             padx = 10
         )
 
-        #Buttons 
+        #BUTTONS#
 
         #Search button
         self.buttonSearch = tk.Button(
@@ -127,7 +127,7 @@ class ClientFoodView(tk.Frame):
             padx = 10
         )
 
-        #treeview
+        #TREEVIEW#
 
         #Food menu treeview
         self.tree = tk.ttk.Treeview(
@@ -140,22 +140,28 @@ class ClientFoodView(tk.Frame):
                 "Size"
             )
         )
+        #Column 1 contains the Kit ID
         self.tree.heading(
             "#0",
             text = "Item Code"
         )
+        #Column 2 contains the Kit Name
         self.tree.heading(
             "#1",
             text = "Kit Name"
         )
+        #Column 3 contains the Kit Price
         self.tree.heading(
             "#2",
             text = "Price"
         )
+        #Column 4 contains the Kit Size
         self.tree.heading(
             "#3",
             text = "Size"
         )
+        #Adjust the width of the columns to decrease the overall size of the treeview,
+        #Significantly trimming down on the size of the window
         self.tree.column(
             "#0",
             minwidth = 70,
@@ -197,28 +203,31 @@ class ClientFoodView(tk.Frame):
             pady = 10,
             padx = 10
         )
+        #Set vertical movement of scrollbar to manipulate vertical scrolling of the treeview
         self.tree.configure(yscrollcommand = self.scroll.set)
 
+    #Method for populating the treeview with the contents of the Kit table
     def updateTable(
         self,
         table 
     ):
-        table.delete(*table.get_children())
-        connection = sql.connect("ga.db")
-        cursor = connection.cursor()
-        insert = """SELECT * FROM KIT"""
-        cursor.execute(insert)
-        i = 0
-        for row in cursor:
-            table.insert(
+        table.delete(*table.get_children()) #Clear contents of treeview
+        connection = sql.connect("ga.db") #Connect to DB
+        cursor = connection.cursor() #Init cursor
+        fetch = """SELECT * FROM KIT""" #Fetch everything from the Kit table, everything.
+        cursor.execute(fetch)
+        i = 0 #init iterator
+        for row in cursor: #iterate through contents of cursor
+            table.insert( #insert currently selected row into treeview
                 "",
                 "end",
                 text = str(i),
                 values = (row[1], row[2], row[3])
             )
-            i += 1
-        connection.close()
+            i += 1 #increase counter
+        connection.close() #close connection
 
+    #Method for searching through the Kit Table
     def searchFood(
         self,
         term,
@@ -227,15 +236,17 @@ class ClientFoodView(tk.Frame):
         table.delete(*table.get_children())
         connection = sql.connect("ga.db")
         cursor = connection.cursor()
+        #SQL statement that fetches every record in kit that contains the search term
         search = """SELECT * FROM KIT WHERE (?) IN (kit_id, kit_name, price, size)"""
-        cursor.execute(search, (term,))
-        i = 0
-        for row in cursor.fetchall():
-            table.insert(
+        cursor.execute(search, (term,)) #Execute search
+        i = 0 #init iterator
+        for row in cursor.fetchall(): #iterate through contents of cursor
+            table.insert( #insert currectly selected row in cursor into treeview
                 "",
                 "end",
                 text = str(i),
                 values = (row[1], row[2], row[3])
             )
-            i += 1
-        connection.close()
+            i += 1 #increase counter
+        connection.close() #close connection
+        cursor.close() #close cursor

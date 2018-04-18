@@ -21,21 +21,21 @@ class MainMenuClient(tk.Frame):
             parent
         )
 
-        #Styling
+        #Styling - set background colour
         self.configure(background = "gray20")
 
-        #Images
+        #IMAGES#
 
-        #Logo
+        #Logo image to be stored within a label, scaled down to fit within the frame
         self.logoLarge = tk.PhotoImage(file = controller.logo)
         self.logoScaled = self.logoLarge.subsample(
             3,
             3
         )
 
-        #Labels
+        #LABELS#
 
-        #Logo 
+        #Label to contain logo
         self.logoLabel = tk.Label(
             self,
             bg = "gray20",
@@ -50,7 +50,7 @@ class MainMenuClient(tk.Frame):
             padx = 10
         )
 
-        #Menu Title Label 
+        #Menu title label 
         self.titleLabel = tk.Label(
             self,
             text = "MAIN MENU",
@@ -66,10 +66,9 @@ class MainMenuClient(tk.Frame):
             padx = 10
         )
 
-        #Buttons 
+        #BUTTONS#
 
-        #Order Menu Button 
-
+        #Button that brings user to the Order Management Menu 
         self.buttonOrder = tk.Button(
             self,
             text = "ORDER MANAGEMENT",
@@ -89,7 +88,7 @@ class MainMenuClient(tk.Frame):
             padx = 10
         )
 
-        #Food Menu
+        #Button that brings user to the Food Menus
         self.buttonFood = tk.Button(
             self,
             text = "BROWSE MENUS",
@@ -109,7 +108,7 @@ class MainMenuClient(tk.Frame):
             padx = 10
         )
 
-        #Account Menu
+        #Button that brings user to the Account Management Menu
         self.buttonAccount = tk.Button(
             self,
             text = "ACCOUNT MANAGEMENT",

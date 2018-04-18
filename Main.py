@@ -47,7 +47,7 @@ import CreateAccount as ca
 import sqlite3 as sql
 
 #main class
-#This is the parent class that every window imports from
+#This is the parent class that every window inherits from
 class window(tk.Tk):
 
     #initialise method
@@ -73,10 +73,15 @@ class window(tk.Tk):
             expand = True
         )
 
-        #Styling
+        #Styling, set global background and minimum window size.
+        #Minimum window size optimized for the login frame.
         self.configure(bg = "gray20")
         self.minsize(width = 626, height = 470)
 
+        #Define a Themed Tkinter Style to use with any treeview in the program.
+        #As treeviews are TTK and not just TK, typical styling configurations
+        #don't apply, to change aesthetics of ttk widgets you must define 
+        #custom styles
         style = tk.ttk.Style()
         style.element_create("Custom.Treeheading.border", "from", "default")
         style.layout("Custom.Treeview.Heading", [
@@ -109,7 +114,7 @@ class window(tk.Tk):
             "bold"
         )
 
-        #Define a local varibale to be inherited in other classes
+        #Define the accountID token that will be inherited into other frames
         self.accountID = 0
 
         #Images
@@ -120,7 +125,7 @@ class window(tk.Tk):
         self.title("Green Apron")
 
         #Setup frames
-        #Initialises the child classes (this encompasses all used screens)
+        #For every frame in the program, run the __init___ within the class
         self.frames = {}
         for F in (
             smm.MainMenuStaff,
@@ -164,9 +169,11 @@ class window(tk.Tk):
                 column = 0,
                 sticky = "nsew"
             )
+        #Open program on login frame
         self.show_frame(l.Login)
 
     #Method for transitioning between frames (or "screens" / "windows")
+    #Brings selected frame to the front of the container.
     def show_frame(
         self,
         cont
@@ -175,7 +182,6 @@ class window(tk.Tk):
         frame.tkraise()
 
     #Method for validating login details, then directing user to appropriate menu
-    #UNFINISHED - CURRENTLY JUST BRINGS USER TO MAIN MENU
     def login(
         self,
         username,
@@ -183,26 +189,25 @@ class window(tk.Tk):
         controller,
         aid,
     ):
-        connection = sql.connect("ga.db")
-        cursor = connection.cursor()
+        connection = sql.connect("ga.db") #Establish connection to central database
+        cursor = connection.cursor() #Initialise a cursor
+        #SQL Statement for reading the level associated with the
+        #details entered
         fetchLevel = """SELECT level FROM CLIENT WHERE username = ?"""
-        if not username == None:
-            cursor.execute(fetchLevel, (username,))
-            level = int(cursor.fetchone()[0])
-            if level == 1:
+        if not username == None: #username presence check
+            cursor.execute(fetchLevel, (username,)) #run the SQL statement with the entered username
+            level = int(cursor.fetchone()[0]) #Assign result of SQL statement to variable
+            if level == 1: #If user is an employee
                 self.show_frame(smm.MainMenuStaff)
-            elif level == 0:
+            elif level == 0: #If user is a customer
                 self.show_frame(cmm.MainMenuClient)
-            else:
-                pass
-        else:
-            pass
+        #SQL statement for finding the account ID associated with the entered details
         fetchID = """SELECT client_id FROM CLIENT WHERE username = ?"""
-        cursor.execute(fetchID, (username,))
-        global Aid
-        Aid = int(cursor.fetchone()[0])
-        self.accountID = Aid
-        cursor.close()
+        cursor.execute(fetchID, (username,)) #Run sql statement with entered username
+        aid = int(cursor.fetchone()[0]) #Assign results of SQL statement to a variable
+        self.accountID = aid #assign the account ID to the account ID variable within the Main
+        cursor.close() #Close the connection
 
+#UI mainlopp
 app = window()
 app.mainloop()

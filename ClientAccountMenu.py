@@ -24,7 +24,7 @@ class ClientAccountMenu(tk.Frame):
         #Styling
         self.configure(background = "gray20")
 
-        #Labels
+        #LABELS#
 
         #Title label
         self.labelTitle = tk.Label(
@@ -43,9 +43,9 @@ class ClientAccountMenu(tk.Frame):
             padx = 10
         )
 
-        #Buttons
+        #BUTTONS#
 
-        #Edit account
+        #Edit account Menu
         self.buttonEdit = tk.Button(
             self,
             text = "EDIT ACCOUNT",
@@ -65,7 +65,7 @@ class ClientAccountMenu(tk.Frame):
             padx = 10
         )
 
-        #View account details
+        #View account details Menu 
         self.buttonView = tk.Button(
             self,
             text = "VIEW ACCOUNT DETAILS",
@@ -85,7 +85,7 @@ class ClientAccountMenu(tk.Frame):
             padx = 10
         )
 
-        #Delete account
+        #Delete account Confirmation Menu
         self.buttonDelete = tk.Button(
             self,
             text = "DELETE ACCOUNT",
@@ -105,7 +105,7 @@ class ClientAccountMenu(tk.Frame):
             padx = 10
         )
 
-        #Return
+        #Return button
         self.buttonReturn = tk.Button(
             self,
             text = "RETURN",
