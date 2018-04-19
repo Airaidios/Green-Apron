@@ -30,7 +30,7 @@ class CreateAccount(tk.Frame):
         self.reqs = {
             "None",
             "Egg Allergy",
-            "Fish Allergy"
+            "Fish Allergy",
             "Peanut Allergy",
             "Shellfish Allergy",
             "Soy Allergy",
